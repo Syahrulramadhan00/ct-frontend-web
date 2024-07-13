@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-row items-baseline mt-3">
+  <nuxt-link :to="link" class="flex flex-row items-baseline mt-3">
     <i
       :class="[
         'pi',
@@ -18,10 +18,13 @@
     >
       {{ title }}
     </p>
-  </div>
+  </nuxt-link>
 </template>
   
   <script>
+import { computed } from "vue";
+import { useRoute } from "vue-router";
+
 export default {
   props: {
     icon: {
@@ -32,11 +35,32 @@ export default {
       type: String,
       required: true,
     },
-    isActive: {
-      type: Boolean,
-      default: false,
+    link: {
+      type: String,
+      required: true,
     },
+  },
+  setup(props) {
+    const route = useRoute();
+    const isActive = computed(() => {
+      if (!props.link || !route.path) {
+        return false;
+      }
+
+      if (props.link === "/") {
+        return route.path === props.link;
+      }
+      return route.path.includes(props.link);
+    });
+
+    return {
+      isActive,
+    };
   },
 };
 </script>
+  
+  <style scoped>
+/* Tambahkan style tambahan jika diperlukan */
+</style>
   
