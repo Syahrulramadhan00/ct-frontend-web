@@ -7,7 +7,7 @@ import "primeicons/primeicons.css";
     <div class="relative z-20 m-4 bg-none flex flex-col min-h-screen">
       <div class="flex flex-row flex-1 bg-none">
         <div class="fixed top-5 left-10 z-30 w-64 h-full">
-          <AppMenu />
+          <AppMenu class />
         </div>
         <div class="flex flex-col flex-1 ml-64">
           <div class="fixed top-5 left-64 right-5 z-30">
