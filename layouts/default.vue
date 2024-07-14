@@ -10,10 +10,10 @@ import "primeicons/primeicons.css";
           <AppMenu class />
         </div>
         <div class="flex flex-col flex-1 ml-64">
-          <div class="fixed top-5 left-64 right-5 z-30">
+          <div class="z-90 fixed top-5 left-64 right-5 z-30">
             <AppHeader />
           </div>
-          <div class="flex-1 w-full p-4 mt-20 -ml-4">
+          <div class="z-0 flex-1 w-full p-4 mt-20 -ml-4">
             <slot />
           </div>
         </div>
