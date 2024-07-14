@@ -13,7 +13,7 @@ import "primeicons/primeicons.css";
           <div class="fixed top-5 left-64 right-5 z-30">
             <AppHeader />
           </div>
-          <div class="flex-1 w-full p-4 mt-16">
+          <div class="flex-1 w-full p-4 mt-20 -ml-4">
             <slot />
           </div>
         </div>
