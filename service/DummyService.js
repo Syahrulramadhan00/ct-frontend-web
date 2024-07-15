@@ -60,6 +60,71 @@ export const DummyService = {
         ];
     },
 
+    getStokBarang() {
+        return [
+            {
+                no : 1,
+                barang : 'Long drut 3/4"',
+                stok : '97',
+                status : 'Tersedia',
+            },
+            {
+                no : 2,
+                barang : 'mur baut 5/6"',
+                stok : '100',
+                status : 'Tersedia',
+            },
+            {
+                no : 3,
+                barang : 'Long drut 3/4"',
+                stok : '100',
+                status : 'Tersedia',
+            },
+            {
+                no : 4,
+                barang : 'Long drut 3/4"',
+                stok : '100',
+                status : 'Tersedia',
+            },
+            {
+                no : 5,
+                barang : 'Long drut 3/4"',
+                stok : '100',
+                status : 'Tersedia',
+            },
+            {
+                no : 6,
+                barang : 'Long drut 3/4"',
+                stok : '100',
+                status : 'Tersedia',
+            },
+            {
+                no : 7,
+                barang : 'Long drut 3/4"',
+                stok : '100',
+                status : 'Tersedia',
+            },
+            {
+                no : 8,
+                barang : 'Long drut 3/4"',
+                stok : '100',
+                status : 'Tersedia',
+            },
+            {
+                no : 9,
+                barang : 'Long drut 3/4"',
+                stok : '100',
+                status : 'Tersedia',
+            },
+            {
+                no : 10,
+                barang : 'Long drut 3/4"',
+                stok : '100',
+                status : 'Tersedia',
+            },
+        ];
+    },
+
     getCustomersSmall() {
         return Promise.resolve(this.getData().slice(0, 10));
     },
