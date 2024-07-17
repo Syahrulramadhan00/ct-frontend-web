@@ -12,17 +12,17 @@
       <AppMenuItem icon="pi-shopping-bag" title="Pembelian" link="/buy" />
       <Divider class="mb-8" />
       <p class="font-medium text-slate-400">Penjualan</p>
-      <AppMenuItem icon="pi-receipt" title="Invoice" link="invoice" />
-      <AppMenuItem icon="pi-truck" title="Surat jalan" link="delivery" />
+      <AppMenuItem icon="pi-receipt" title="Invoice" link="/invoice" />
+      <AppMenuItem icon="pi-truck" title="Surat jalan" link="/delivery" />
       <AppMenuItem
         icon="pi-book"
         title="Tanda terima"
         class="mb-5"
-        link="receipt"
+        link="/receipt"
       />
       <Divider class="mb-8" />
-      <AppMenuItem icon="pi-address-book" title="Klien" link="client" />
-      <AppMenuItem icon="pi-chart-pie" title="Analitik" link="analytic" />
+      <AppMenuItem icon="pi-address-book" title="Klien" link="/client" />
+      <AppMenuItem icon="pi-chart-pie" title="Analitik" link="/analytic" />
     </div>
   </div>
 </template>

@@ -73,7 +73,9 @@
         </Column>
         <Column field="status" header="">
           <template #body="{}">
-            <i class="pi pi-chevron-right"></i>
+            <nuxt-link to="/receipt/detail">
+              <i class="pi pi-chevron-right"></i>
+            </nuxt-link>
             <!-- <p>
               {{ data.status }}
             </p> -->
