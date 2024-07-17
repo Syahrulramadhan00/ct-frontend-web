@@ -305,6 +305,80 @@ export const DummyService = {
         ];
     },
 
+    getInvoiceProduct(){
+       return [ {
+            no : 1,
+            nama : 'Longdrut 3/4"',
+            jumlah : '100',
+            harga : '100.000',
+            total : '10.000.000',
+        },
+        {
+            no : 2,
+            nama : 'mur baut 5/6"',
+            jumlah : '110',
+            harga : '100.000',
+            total : '11.000.000',
+        },
+        {
+            no : 3,
+            nama : 'Longdrut 3/4"',
+            jumlah : '120',
+            harga : '100.000',
+            total : '12.000.000',
+        },
+        {
+            no : 4,
+            nama : 'Longdrut 3/4"',
+            jumlah : '130',
+            harga : '100.000',
+            total : '13.000.000',
+        },
+        {
+            no : 5,
+            nama : 'Longdrut 3/4"',
+            jumlah : '140',
+            harga : '100.000',
+            total : '14.000.000',
+        },
+        {
+            no : 6,
+            nama : 'Longdrut 3/4"',
+            jumlah : '150',
+            harga : '100.000',
+            total : '15.000.000',
+        },
+        {
+            no : 7,
+            nama : 'Longdrut 3/4"',
+            jumlah : '160',
+            harga : '100.000',
+            total : '16.000.000',
+        },
+        {
+            no : 8,
+            nama : 'Longdrut 3/4"',
+            jumlah : '170',
+            harga : '100.000',
+            total : '17.000.000',
+        },
+        {
+            no : 9,
+            nama : 'Longdrut 3/4"',
+            jumlah : '180',
+            harga : '100.000',
+            total : '18.000.000',
+        },
+        {
+            no : 10,
+            nama : 'Longdrut 3/4"',
+            jumlah : '190',
+            harga : '100.000',
+            total : '19.000.000',
+        },
+    ];
+    },
+
     getCustomersSmall() {
         return Promise.resolve(this.getData().slice(0, 10));
     },

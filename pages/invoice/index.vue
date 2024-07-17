@@ -68,7 +68,9 @@
         </Column>
         <Column field="status" header="">
           <template #body="{}">
-            <i class="pi pi-chevron-right"></i>
+            <NuxtLink to="/invoice/detail"
+              ><i class="pi pi-chevron-right"></i
+            ></NuxtLink>
             <!-- <p>
               {{ data.status }}
             </p> -->
