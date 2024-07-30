@@ -100,9 +100,15 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { DummyService } from "@/service/DummyService";
+import FetchUtils from "~/composables/FetchUtils";
+
+const { fetchApi, res, url } = FetchUtils();
+
+url.value = "health";
 
 onMounted(() => {
   tagihan.value = DummyService.getTagihanData();
+  fetchApi();
 });
 
 const tagihan = ref();
