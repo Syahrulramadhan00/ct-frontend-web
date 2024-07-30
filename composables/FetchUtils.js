@@ -36,7 +36,6 @@ export default function FetchUtils() {
       }
 
       if (response.status == 401) {
-        console.log("401 COKK");
         router.push("/auth");
         return;
       }
