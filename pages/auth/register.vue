@@ -2,12 +2,12 @@
   <div
     class="bg-blur-lg backdrop-filter backdrop-blur-xl bg-white/65 rounded-2xl p-2 shadow-lg mt-44 min-w-96 lg:mx-44 md:mx-44 mx-4"
   >
-    <div class="flex items-center justify-around flex-wrap">
-      <div class="md:mt-12 mx-2">
+    <div class="flex items-center justify-around flex-wrap py-12 px-3">
+      <div class="mx-2">
         <p class="text-2xl font-light mb-2">Selamat datang 👋</p>
-        <p class="text-6xl font-bold">Register</p>
+        <p class="text-6xl font-bold mb-8">Register</p>
       </div>
-      <div class="my-12">
+      <div class="">
         <FloatLabel class="">
           <InputText
             id="username"
@@ -36,7 +36,9 @@
           </div>
           <div class="flex justif">
             <p class="text-sm mr-1">Sudah punya akun?</p>
-            <p class="font-semibold text-blue-600 text-sm">Masuk disini</p>
+            <NuxtLink to="/auth">
+              <p class="font-semibold text-blue-600 text-sm">Masuk disini</p>
+            </NuxtLink>
           </div>
         </div>
       </div>
