@@ -104,7 +104,7 @@ import FetchUtils from "~/composables/FetchUtils";
 
 const { fetchApi, res, url } = FetchUtils();
 
-url.value = "health";
+url.value = "token-validator";
 
 onMounted(() => {
   tagihan.value = DummyService.getTagihanData();
