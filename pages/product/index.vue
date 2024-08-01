@@ -13,7 +13,7 @@
             <label for="name">Nama barang</label>
           </FloatLabel>
           <div
-            @click="addProduct()"
+            @click="addProduct(namaBarang, () => (visible = false))"
             class="main-container bg-purple-400 p-0 flex items-center justify-center h-10 shadow-md mt-5 hover:cursor-pointer"
           >
             <div v-if="pending" class="pt-1">
@@ -28,6 +28,7 @@
       </Dialog>
 
       <DataTable
+        v-if="!pending"
         v-model:filters="filters"
         :value="tagihan"
         scrollable
@@ -74,26 +75,28 @@
           </template>
         </Column>
       </DataTable>
+      <div v-else class="flex flex-1 justify-center items-center h-[34rem]">
+        <ProgressSpinner />
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
 import { FilterMatchMode } from "primevue/api";
-import { DummyService } from "@/service/DummyService";
 import "primeicons/primeicons.css";
 import Dialog from "primevue/dialog";
-import FetchUtils from "~/composables/FetchUtils";
+import ProgressSpinner from "primevue/progressspinner";
 
 onMounted(() => {
-  tagihan.value = DummyService.getStokBarang();
+  init();
 });
 
-const { fetchApi, res, url, pending, method, body } = FetchUtils();
-const tagihan = ref();
-const visible = ref(true);
+const tagihan = ref([]);
+const visible = ref(false);
 const namaBarang = ref(null);
+const { pending, addProduct, getAllProduct } = ProductApi();
+
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   no: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
@@ -102,15 +105,7 @@ const filters = ref({
   status: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
 });
 
-async function addProduct() {
-  url.value = "add-product";
-  method.value = "POST";
-
-  body.value = {
-    name: namaBarang.value,
-  };
-
-  await fetchApi();
-  visible.value = false;
+async function init() {
+  tagihan.value = await getAllProduct();
 }
 </script>
