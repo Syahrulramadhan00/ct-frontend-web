@@ -75,7 +75,6 @@ async function sendOtp() {
 
   if (res.value.status == 200) {
     const data = await res.value.json();
-    console.log(data.data.token);
     const tokenCookie = useCookie("token");
     tokenCookie.value = data.data.token;
     router.push("/");
