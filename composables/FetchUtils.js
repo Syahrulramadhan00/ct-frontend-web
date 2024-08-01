@@ -8,12 +8,14 @@ export default function FetchUtils() {
   const body = ref({});
   const url = ref("");
   const router = useRouter();
+  const pending = ref(false);
 
   const baseApiUrl = useRuntimeConfig().public.apiBaseUrl;
   const apiUrlString = typeof baseApiUrl === "string" ? baseApiUrl : "";
 
   const fetchApi = async () => {
     try {
+      pending.value = true;
       let response = null;
 
       if (method.value === "GET") {
@@ -27,7 +29,7 @@ export default function FetchUtils() {
       } else {
         response = await fetch(`${apiUrlString}/${url.value}`, {
           method: method.value,
-          body: body.value,
+          body: JSON.stringify(body.value),
           headers: {
             "Content-Type": "application/json",
             Authorization: "",
@@ -44,13 +46,14 @@ export default function FetchUtils() {
         throw new Error("Network response was not ok");
       }
 
-      const data = await response.json();
-      res.value = data;
-      return data;
+      res.value = response;
+      return res;
     } catch (error) {
-      console.error("Fetch error:", error);
+      console.error("[ERROR]:", error);
+    } finally {
+      pending.value = false;
     }
   };
 
-  return { res, fetchApi, method, body, url };
+  return { res, fetchApi, method, body, url, pending };
 }

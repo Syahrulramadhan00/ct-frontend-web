@@ -23,9 +23,16 @@
         </div>
         <div class="flex flex-col items-center">
           <div
-            class="main-container bg-purple-300 p-0 py-1 px-3 flex justify-evenly items-center mt-8 w-56 md:w-64 lg:w-[27rem] mb-2"
+            @click="sendOtp"
+            class="main-container bg-purple-300 p-0 py-1 px-3 flex justify-evenly items-center mt-8 w-56 md:w-64 lg:w-[27rem] mb-2 hover:cursor-pointer"
           >
-            <p class="text-purple-800 font-semibold">Verifikasi</p>
+            <div v-if="pending" class="pt-1">
+              <ProgressSpinner
+                style="width: 20px; height: 20px"
+                strokeWidth="6"
+              />
+            </div>
+            <p v-else class="text-purple-800 font-semibold">Verifikasi</p>
           </div>
           <div class="flex">
             <NuxtLink>
@@ -44,11 +51,32 @@
   <script setup>
 import InputOtp from "primevue/inputotp";
 import { ref } from "vue";
+import { useEmailOtp } from "~/store/EmailOtp";
+import FetchUtils from "~/composables/FetchUtils";
+import { useRouter } from "vue-router";
 
 definePageMeta({
   layout: "background",
 });
 
+const router = useRouter();
+const storeOtp = useEmailOtp();
+const email = computed(() => storeOtp.getEmail);
 const otp = ref(null);
+
+const { fetchApi, res, url, pending, method, body } = FetchUtils();
+url.value = "verify-otp";
+method.value = "POST";
+
+async function sendOtp() {
+  body.value = { email: email.value, otp: otp.value };
+
+  await fetchApi();
+
+  console.log(res.value.status);
+  if (res.value.status == 200) {
+    router.push("/");
+  }
+}
 </script>
   

@@ -9,7 +9,7 @@ export default defineNuxtConfig({
       apiBaseUrl: process.env.API_BASE_URL,
     },
   },
-  modules: ["nuxt-primevue", "@nuxt/image"],
+  modules: ["nuxt-primevue", "@nuxt/image", "@pinia/nuxt"],
   primevue: {
     options: {
       unstyled: true,
