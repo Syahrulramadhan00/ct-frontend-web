@@ -34,8 +34,6 @@ export const AuthApi = () => {
       password: passwordData,
     };
 
-    console.log("data", body.value);
-
     await fetchApi();
 
     if (res.value.status == 428) {

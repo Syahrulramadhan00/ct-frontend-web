@@ -36,8 +36,6 @@ export const ProductApi = () => {
         };
       });
 
-      console.log("body", data);
-
       return data;
     } else {
       return [];

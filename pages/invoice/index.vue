@@ -2,24 +2,19 @@
   <div class="flex">
     <div class="main-container grow h-[35rem] w-56">
       <DataTable
+        v-if="!invoicePending"
         v-model:filters="filters"
-        :value="tagihan"
+        :value="invoices"
         scrollable
         scrollHeight="28rem"
         tableStyle="min-width: 50rem"
-        :globalFilterFields="[
-          'no',
-          'kode',
-          'klien',
-          'status',
-          'jumlah',
-          'tanggal',
-        ]"
+        :globalFilterFields="['no', 'kode', 'klien', 'status', 'tanggal']"
       >
         <template #header>
           <div class="flex justify-between">
             <div
-              class="main-container bg-purple-400 p-0 flex items-center shadow-md"
+              @click="addModal = true"
+              class="main-container bg-purple-400 p-0 flex items-center shadow-md hover:cursor-pointer"
             >
               <p class="font-semibold mx-3 text-white">Tambah</p>
             </div>
@@ -46,18 +41,17 @@
           </template>
         </Column>
         <Column filterField="klien" field="klien" header="Klien"></Column>
-        <Column filterField="jumlah" field="jumlah" header="Jumlah"></Column>
         <Column filterField="tanggal" field="tanggal" header="Tanggal"></Column>
         <Column filterField="status" field="status" header="Status">
           <template #body="{ data }">
             <div
               :class="{
-                'main-container bg-red-500 p-0 px-2 py-1 flex justify-center rounded-2xl':
-                  data.kodeStatus === 1,
                 'main-container bg-green-500 p-0 px-2 py-1 flex justify-center rounded-2xl':
-                  data.kodeStatus === 2,
+                  data.kodeStatus === 8,
                 'main-container bg-black p-0 px-2 py-1 flex justify-center rounded-2xl':
-                  data.kodeStatus === 0,
+                  data.kodeStatus === 1,
+                'main-container bg-red-500 p-0 px-2 py-1 flex justify-center rounded-2xl':
+                  data.kodeStatus != 8 && data.kodeStatus != 1,
               }"
             >
               <p class="text-white">
@@ -71,32 +65,78 @@
             <NuxtLink to="/invoice/detail"
               ><i class="pi pi-chevron-right"></i
             ></NuxtLink>
-            <!-- <p>
-              {{ data.status }}
-            </p> -->
           </template>
         </Column>
       </DataTable>
+      <div v-else class="flex flex-1 justify-center items-center h-[34rem]">
+        <ProgressSpinner />
+      </div>
     </div>
+
+    <Dialog
+      v-model:visible="addModal"
+      modal
+      header="Buat invoice baru"
+      :style="{ width: '25rem' }"
+    >
+      <div class="flex flex-col">
+        <p class="mb-4">Pilih klien :</p>
+        <div class="w-80 ml-4">
+          <Dropdown
+            v-model="selectedClient"
+            :options="clients"
+            optionLabel="name"
+            placeholder="pilihan klien"
+            class="flex justify-between w-full items-center px-2"
+            panelClass="bg-white rounded-lg px-2 hover:cursor-pointer drop-shadow-lg"
+            :virtualScrollerOptions="{ itemSize: 38 }"
+          />
+        </div>
+        <div
+          @click="
+            createInvoice(selectedClient.id, async () => {
+              addModal = false;
+              invoices = await getInvoices();
+            })
+          "
+          class="main-container bg-purple-400 p-0 flex items-center justify-center h-10 shadow-md mt-5 hover:cursor-pointer"
+        >
+          <div v-if="pending" class="pt-1">
+            <ProgressSpinner
+              style="width: 20px; height: 20px"
+              strokeWidth="6"
+            />
+          </div>
+          <p v-else class="font-semibold mx-3 text-white">Tambah</p>
+        </div>
+      </div>
+    </Dialog>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
 import { FilterMatchMode } from "primevue/api";
 import { DummyService } from "@/service/DummyService";
-import "primeicons/primeicons.css";
 
 onMounted(() => {
-  tagihan.value = DummyService.getInvoices();
+  init();
 });
 
-const tagihan = ref();
+async function init() {
+  invoices.value = await getInvoices();
+  clients.value = await getClients();
+}
+
+const invoices = ref();
+const addModal = ref(false);
+const selectedClient = ref();
+const clients = ref([]);
+const { pending, getClients } = ClientApi();
+const { pending: invoicePending, createInvoice, getInvoices } = InvoiceApi();
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   no: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
   kode: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-  jumlah: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
   status: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
   tanggal: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
   klien: { value: null, matchMode: FilterMatchMode.STARTS_WITH },

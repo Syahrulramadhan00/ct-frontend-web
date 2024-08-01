@@ -1,0 +1,58 @@
+import FetchUtils from "~/composables/FetchUtils";
+
+export const InvoiceApi = () => {
+  const { fetchApi, res, url, pending, method, body } = FetchUtils();
+
+  async function createInvoice(clientIdData, fallback) {
+    res.value = [];
+    url.value = "add-invoice";
+    method.value = "POST";
+
+    body.value = {
+      client_id: clientIdData,
+    };
+
+    await fetchApi();
+
+    if (res.value.status == 200) {
+      await fallback();
+    }
+  }
+
+  async function getInvoices() {
+    res.value = [];
+    url.value = "get-all-invoice";
+    method.value = "GET";
+
+    await fetchApi();
+    if (res.value.status == 200) {
+      const body = await res.value.json();
+      const data = body.data.map((item, index) => {
+        return {
+          id: item.id,
+          no: index + 1,
+          kode: item.InvoiceCode,
+          klien: item.ClientName,
+          tanggal: formatDate(item.CreatedAt),
+          status: item.Status,
+          kodeStatus: item.StatusId,
+        };
+      });
+
+      return data;
+    } else {
+      return [];
+    }
+  }
+
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Month is 0-based
+    const year = date.getFullYear();
+
+    return `${day}/${month}/${year}`;
+  }
+
+  return { res, pending, createInvoice, getInvoices };
+};
