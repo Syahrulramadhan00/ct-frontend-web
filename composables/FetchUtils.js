@@ -47,10 +47,6 @@ export default function FetchUtils() {
         return;
       }
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
       res.value = response;
       return res;
     } catch (error) {
