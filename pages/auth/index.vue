@@ -25,7 +25,7 @@
         </div>
         <div class="flex flex-col items-center">
           <div
-            @click="login"
+            @click="login(email, password)"
             class="main-container bg-purple-300 p-0 py-1 px-3 flex justify-evenly items-center mt-8 w-56 md:w-64 lg:w-[27rem] mb-2 hover:cursor-pointer"
           >
             <div v-if="pending" class="pt-1">
@@ -49,9 +49,7 @@
 </template>
 
 <script setup>
-import { useEmailOtp } from "~/store/EmailOtp";
-import FetchUtils from "~/composables/FetchUtils";
-import { useRouter } from "vue-router";
+import ProgressSpinner from "primevue/progressspinner";
 
 definePageMeta({
   layout: "background",
@@ -59,47 +57,7 @@ definePageMeta({
 
 const email = ref(null);
 const password = ref(null);
-const { fetchApi, res, url, pending, method, body } = FetchUtils();
-const router = useRouter();
-const storeOtp = useEmailOtp();
 
-async function login() {
-  url.value = "login";
-  method.value = "POST";
-
-  body.value = {
-    email: email.value,
-    password: password.value,
-  };
-
-  await fetchApi();
-
-  if (res.value.status == 428) {
-    res.value = [];
-    requestOtp();
-  }
-
-  if (res.value.status == 200) {
-    const data = await res.value.json();
-    const tokenCookie = useCookie("token");
-    tokenCookie.value = data.data.token;
-    router.push("/");
-  }
-}
-
-async function requestOtp() {
-  url.value = "request-otp";
-
-  body.value = {
-    email: email.value,
-  };
-
-  await fetchApi();
-
-  if (res.value.status == 200) {
-    storeOtp.setEmailOtp(email.value);
-    router.push("/auth/otp");
-  }
-}
+const { login, pending } = AuthApi();
 </script>
 

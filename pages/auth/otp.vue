@@ -9,7 +9,6 @@
       </div>
       <div class="">
         <div class="flex">
-          <!-- <InputOtp class="" v-model="otp" /> -->
           <InputOtp v-model="otp">
             <template #default="{ attrs, events }">
               <input
@@ -23,7 +22,7 @@
         </div>
         <div class="flex flex-col items-center">
           <div
-            @click="sendOtp"
+            @click="sendOtp(email, otp)"
             class="main-container bg-purple-300 p-0 py-1 px-3 flex justify-evenly items-center mt-8 w-56 md:w-64 lg:w-[27rem] mb-2 hover:cursor-pointer"
           >
             <div v-if="pending" class="pt-1">
@@ -49,36 +48,18 @@
 </template>
   
   <script setup>
+import ProgressSpinner from "primevue/progressspinner";
 import InputOtp from "primevue/inputotp";
-import { ref } from "vue";
 import { useEmailOtp } from "~/store/EmailOtp";
-import FetchUtils from "~/composables/FetchUtils";
-import { useRouter } from "vue-router";
 
 definePageMeta({
   layout: "background",
 });
 
-const router = useRouter();
 const storeOtp = useEmailOtp();
 const email = computed(() => storeOtp.getEmail);
 const otp = ref(null);
 
-const { fetchApi, res, url, pending, method, body } = FetchUtils();
-url.value = "verify-otp";
-method.value = "POST";
-
-async function sendOtp() {
-  body.value = { email: email.value, otp: otp.value };
-
-  await fetchApi();
-
-  if (res.value.status == 200) {
-    const data = await res.value.json();
-    const tokenCookie = useCookie("token");
-    tokenCookie.value = data.data.token;
-    router.push("/");
-  }
-}
+const { sendOtp, pending } = AuthApi();
 </script>
   

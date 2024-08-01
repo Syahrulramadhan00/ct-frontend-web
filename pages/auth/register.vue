@@ -30,7 +30,7 @@
         </FloatLabel>
         <div class="flex flex-col items-center">
           <div
-            @click="register"
+            @click="register(email, password, username)"
             class="main-container bg-purple-300 p-0 py-1 px-3 flex justify-evenly items-center mt-8 w-56 md:w-64 lg:w-[27rem] mb-2 hover:cursor-pointer"
           >
             <div v-if="pending" class="pt-1">
@@ -58,50 +58,12 @@ definePageMeta({
   layout: "background",
 });
 
-import FetchUtils from "~/composables/FetchUtils";
 import ProgressSpinner from "primevue/progressspinner";
-import { useRouter } from "vue-router";
-import { useEmailOtp } from "~/store/EmailOtp";
-
-const { fetchApi, res, url, pending, method, body } = FetchUtils();
 
 const email = ref(null);
 const password = ref(null);
 const username = ref(null);
-const router = useRouter();
-const storeOtp = useEmailOtp();
-
-async function requestOtp() {
-  url.value = "request-otp";
-
-  body.value = {
-    email: email.value,
-  };
-
-  await fetchApi();
-
-  if (res.value.status == 200) {
-    storeOtp.setEmailOtp(email.value);
-    router.push("/auth/otp");
-  }
-}
-
-async function register() {
-  url.value = "register";
-  method.value = "POST";
-
-  body.value = {
-    email: email.value,
-    password: password.value,
-    name: username.value,
-  };
-
-  await fetchApi();
-
-  if (res.value.status == 200) {
-    requestOtp();
-  }
-}
+const { register, pending } = AuthApi();
 </script>
 
   
