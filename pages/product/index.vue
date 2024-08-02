@@ -13,7 +13,12 @@
             <label for="name">Nama barang</label>
           </FloatLabel>
           <div
-            @click="addProduct(namaBarang, () => (visible = false))"
+            @click="
+              addProduct(namaBarang, () => {
+                visible = false;
+                init();
+              })
+            "
             class="main-container bg-purple-400 p-0 flex items-center justify-center h-10 shadow-md mt-5 hover:cursor-pointer"
           >
             <div v-if="pending" class="pt-1">

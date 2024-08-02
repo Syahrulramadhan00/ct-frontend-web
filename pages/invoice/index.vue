@@ -61,8 +61,8 @@
           </template>
         </Column>
         <Column field="status" header="">
-          <template #body="{}">
-            <NuxtLink to="/invoice/detail"
+          <template #body="{ data }">
+            <NuxtLink :to="'/invoice/detail/' + data.id"
               ><i class="pi pi-chevron-right"></i
             ></NuxtLink>
           </template>
@@ -116,7 +116,6 @@
 
 <script setup>
 import { FilterMatchMode } from "primevue/api";
-import { DummyService } from "@/service/DummyService";
 
 onMounted(() => {
   init();
