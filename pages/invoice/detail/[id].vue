@@ -13,15 +13,20 @@
           <p>{{ invoice ? invoice.Client.name : "" }}</p>
         </div>
       </div>
-      <div v-if="invoice != null">
-        <div class="ml-2" v-if="invoice.InvoiceStatusId === 1">
+      <div v-if="isInvoiceValid">
+        <div class="ml-2">
           <div
             class="main-container bg-black p-0 py-1 mb-2 justify-center rounded-2xl"
           >
             <p class="text-white flex-1 text-center">Belum dikunci</p>
           </div>
           <div
-            class="main-container bg-purple-400 p-0 py-1 px-3 flex justify-evenly items-center"
+            @click="
+              lockInvoice(invoice.ID, async () => {
+                invoice = await getInvoice(route.params.id);
+              })
+            "
+            class="main-container bg-purple-400 p-0 py-1 px-3 flex justify-evenly items-center hover:cursor-pointer"
           >
             <i class="pi pi-lock text-white mr-1"> </i>
             <p class="text-white">Simpan akhir</p>
@@ -51,6 +56,7 @@
         <template #header>
           <div class="flex justify-between">
             <div
+              v-if="isInvoiceValid"
               @click="addSale = true"
               class="main-container bg-purple-400 p-0 flex items-center shadow-md hover:cursor-pointer"
             >
@@ -63,7 +69,7 @@
         <Column field="jumlah" header="Jumlah"></Column>
         <Column field="harga" header="Harga"></Column>
         <Column field="total" header="Total"></Column>
-        <Column field="" header="Menu">
+        <Column field="" header="Menu" v-if="isInvoiceValid">
           <template #body="{}">
             <div class="flex">
               <div
@@ -126,6 +132,7 @@
               inputId="ya"
               name="faktur"
               value="ya"
+              :disabled="!isInvoiceValid"
             />
             <label for="faktur1" class="ml-2">Ya</label>
           </div>
@@ -135,6 +142,7 @@
               inputId="tidak"
               name="faktur"
               value="tidak"
+              :disabled="!isInvoiceValid"
             />
             <label for="faktur2" class="ml-2">Tidak</label>
           </div>
@@ -142,7 +150,12 @@
         <!-- DISCOUNT SECTION -->
         <div class="flex items-end">
           <FloatLabel class="mt-8">
-            <InputText id="discount" v-model="discount" class="w-96 md:w-80" />
+            <InputText
+              id="discount"
+              v-model="discount"
+              class="w-96 md:w-80"
+              :disabled="!isInvoiceValid"
+            />
             <label for="discount">Presentasi diskon</label>
           </FloatLabel>
           <p class="ml-4 text-2xl text-gray-500">%</p>
@@ -155,6 +168,7 @@
               id="jangkaPembayaran"
               v-model="jangkaPembayaran"
               class="w-96 md:w-80"
+              :disabled="!isInvoiceValid"
             />
             <label for="jangkaPembayaran">Jangka pembayaran</label>
           </FloatLabel>
@@ -162,6 +176,7 @@
         </div>
 
         <div
+          v-if="isInvoiceValid"
           @click="
             updateFaktur(
               {
@@ -183,11 +198,17 @@
       </div>
     </div>
 
+    <!-- MAIN INFORMATION SECTION -->
     <div class="main-container mt-5">
       <div class="flex flex-wrap">
         <div class="flex-1">
           <FloatLabel class="mt-4">
-            <InputText id="poCode" v-model="poCode" class="lg:w-96 md:w-64" />
+            <InputText
+              id="poCode"
+              v-model="poCode"
+              class="lg:w-96 md:w-64"
+              :disabled="!isInvoiceValid"
+            />
             <label for="poCode">kode pre-order</label>
           </FloatLabel>
           <FloatLabel class="mt-8">
@@ -195,6 +216,7 @@
               id="namaPenjual"
               v-model="namaPenjual"
               class="md:w-64 lg:w-96"
+              :disabled="!isInvoiceValid"
             />
             <label for="namaPenjual">Nama penjual</label>
           </FloatLabel>
@@ -216,6 +238,7 @@
               id="metodePembayaran"
               v-model="metodePembayaran"
               class="md:w-64 lg:w-96"
+              :disabled="!isInvoiceValid"
             />
             <label for="metodePembayaran">Metode pembayaran</label>
           </FloatLabel>
@@ -224,6 +247,7 @@
               id="platformPembayran"
               v-model="platformPembayran"
               class="md:w-64 lg:w-96"
+              :disabled="!isInvoiceValid"
             />
             <label for="platformPembayran">Platform pembayaran</label>
           </FloatLabel>
@@ -232,6 +256,7 @@
               id="nomorRekening"
               v-model="nomorRekening"
               class="md:w-64 lg:w-96"
+              :disabled="!isInvoiceValid"
             />
             <label for="nomorRekening">Nomor rekening</label>
           </FloatLabel>
@@ -240,6 +265,7 @@
               id="deskripsiPlatform"
               v-model="deskripsiPlatform"
               class="md:w-64 lg:w-96"
+              :disabled="!isInvoiceValid"
             />
             <label for="deskripsiPlatform">Deskripsi platform</label>
           </FloatLabel>
@@ -247,7 +273,25 @@
       </div>
       <div class="flex w-full justify-center">
         <div
-          class="main-container bg-purple-400 p-0 py-1 px-3 mx-24 flex flex-1 justify-center items-center mt-8"
+          @click="
+            updateMainInformation(
+              {
+                invoice_id: invoice.ID,
+                po_code: poCode,
+                payment_method: metodePembayaran,
+                platform: platformPembayran,
+                platform_number: nomorRekening,
+                platform_description: deskripsiPlatform,
+                seller: namaPenjual,
+                note: catatan,
+              },
+              async () => {
+                invoice = await getInvoice(route.params.id);
+                initMainInformation();
+              }
+            )
+          "
+          class="main-container bg-purple-400 p-0 py-1 px-3 mx-24 flex flex-1 justify-center items-center mt-8 hover:cursor-pointer"
         >
           <p class="text-white">Simpan</p>
         </div>
@@ -335,12 +379,29 @@ async function init() {
   products.value = await getAllProduct();
 
   initFaktur();
+  initMainInformation();
 }
 
 async function initFaktur() {
   faktur.value = invoice.value.IsTaxable ? "ya" : "tidak";
   discount.value = invoice.value.Discount;
   jangkaPembayaran.value = invoice.value.PaymentTerm;
+}
+
+async function initMainInformation() {
+  poCode.value = invoice.value.PoCode == "" ? "-" : invoice.value.PoCode;
+  metodePembayaran.value =
+    invoice.value.PaymentMethod == "" ? "-" : invoice.value.PaymentMethod;
+  platformPembayran.value =
+    invoice.value.Platform == "" ? "-" : invoice.value.Platform;
+  nomorRekening.value =
+    invoice.value.PlatformNumber == "" ? "-" : invoice.value.PlatformNumber;
+  deskripsiPlatform.value =
+    invoice.value.PlatformDescription == ""
+      ? "-"
+      : invoice.value.PlatformDescription;
+  namaPenjual.value = invoice.value.Seller == "" ? "-" : invoice.value.Seller;
+  catatan.value = invoice.value.Note == "" ? "-" : invoice.value.Note;
 }
 
 const onAdvancedUpload = () => {
@@ -352,7 +413,13 @@ const onAdvancedUpload = () => {
   });
 };
 
-const { pending, getInvoice, updateFaktur } = InvoiceApi();
+const {
+  pending,
+  getInvoice,
+  updateFaktur,
+  updateMainInformation,
+  lockInvoice,
+} = InvoiceApi();
 const { pending: salePending, addSales, getAllSales } = SalesApi();
 const { pending: productPending, getAllProduct } = ProductApi();
 
@@ -363,13 +430,14 @@ const product = ref();
 const faktur = ref("");
 const discount = ref(null);
 const jangkaPembayaran = ref(null);
-const poCode = ref(null);
-const metodePembayaran = ref(null);
-const platformPembayran = ref(null);
-const nomorRekening = ref(null);
-const deskripsiPlatform = ref(null);
-const namaPenjual = ref(null);
-const catatan = ref(null);
+
+const poCode = ref("");
+const metodePembayaran = ref("");
+const platformPembayran = ref("");
+const nomorRekening = ref("");
+const deskripsiPlatform = ref("");
+const namaPenjual = ref("");
+const catatan = ref("");
 
 const sales = ref([]);
 const addSale = ref(false);
@@ -377,4 +445,8 @@ const selectedProduct = ref(null);
 const products = ref([]);
 const productCount = ref(null);
 const productPrice = ref(null);
+
+const isInvoiceValid = computed(() => {
+  return invoice.value != null && invoice.value.InvoiceStatusId === 1;
+});
 </script>

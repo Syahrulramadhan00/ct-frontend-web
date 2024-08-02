@@ -89,5 +89,47 @@ export const InvoiceApi = () => {
     fallback();
   }
 
-  return { res, pending, createInvoice, getInvoices, getInvoice, updateFaktur };
+  async function updateMainInformation(invoiceData, fallback) {
+    res.value = [];
+    url.value = "update-main-information";
+    method.value = "PUT";
+
+    body.value = {
+      invoice_id: invoiceData.invoice_id,
+      po_code: invoiceData.po_code ?? "-",
+      note: invoiceData.note,
+      seller: invoiceData.seller,
+      platform: invoiceData.platform,
+      payment_method: invoiceData.payment_method,
+      platform_description: invoiceData.platform_description,
+      platform_number: invoiceData.platform_number,
+    };
+
+    await fetchApi();
+    fallback();
+  }
+
+  async function lockInvoice(invoiceId, fallback) {
+    res.value = [];
+    url.value = "lock-invoice";
+    method.value = "POST";
+
+    body.value = {
+      id: invoiceId,
+    };
+
+    await fetchApi();
+    fallback();
+  }
+
+  return {
+    res,
+    pending,
+    createInvoice,
+    getInvoices,
+    getInvoice,
+    updateFaktur,
+    updateMainInformation,
+    lockInvoice,
+  };
 };
