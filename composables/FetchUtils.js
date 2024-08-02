@@ -43,6 +43,7 @@ export default function FetchUtils() {
       }
 
       if (response.status == 401) {
+        tokenCookie.value = null;
         router.push("/auth");
         return;
       }

@@ -56,6 +56,7 @@
   <script setup>
 definePageMeta({
   layout: "background",
+  middleware: "auth",
 });
 
 import ProgressSpinner from "primevue/progressspinner";

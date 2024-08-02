@@ -53,6 +53,7 @@ import ProgressSpinner from "primevue/progressspinner";
 
 definePageMeta({
   layout: "background",
+  middleware: "auth",
 });
 
 const email = ref(null);

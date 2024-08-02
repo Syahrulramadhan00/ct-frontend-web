@@ -54,6 +54,7 @@ import { useEmailOtp } from "~/store/EmailOtp";
 
 definePageMeta({
   layout: "background",
+  middleware: "auth",
 });
 
 const storeOtp = useEmailOtp();
