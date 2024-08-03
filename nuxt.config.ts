@@ -10,12 +10,6 @@ export default defineNuxtConfig({
     },
   },
   modules: ["nuxt-primevue", "@nuxt/image", "@pinia/nuxt"],
-  primevue: {
-    options: {
-      unstyled: true,
-    },
-    importPT: { from: path.resolve(__dirname, "./presets/lara/") },
-  },
   postcss: {
     plugins: {
       tailwindcss: {},
@@ -23,4 +17,10 @@ export default defineNuxtConfig({
     },
   },
   css: ["~/assets/css/main.css"],
+  primevue: {
+    options: {
+      unstyled: true,
+    },
+    importPT: { from: path.resolve(__dirname, "./presets/lara/") },
+  },
 });

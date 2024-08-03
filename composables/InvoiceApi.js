@@ -60,7 +60,6 @@ export const InvoiceApi = () => {
   }
 
   async function getInvoice(invoiceId) {
-    console.log("invoice");
     res.value = [];
     url.value = `get-invoice/${invoiceId}`;
     method.value = "GET";

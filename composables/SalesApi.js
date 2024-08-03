@@ -45,5 +45,34 @@ export const SalesApi = () => {
     }
   }
 
-  return { res, pending, addSales, getAllSales };
+  async function deleteSales(salesIdData, fallback) {
+    res.value = [];
+    url.value = "delete-sale";
+    method.value = "DELETE";
+    body.value = {
+      id: salesIdData,
+    };
+
+    await fetchApi();
+    fallback();
+  }
+
+  async function updateSales(salesData, fallback) {
+    res.value = [];
+    url.value = "update-sale";
+    method.value = "PUT";
+
+    body.value = {
+      id: salesData.id,
+      current_count: salesData.currentCount,
+      product_id: salesData.productId,
+      count: +salesData.count,
+      price: +salesData.price,
+    };
+
+    await fetchApi();
+    fallback();
+  }
+
+  return { res, pending, addSales, getAllSales, deleteSales, updateSales };
 };

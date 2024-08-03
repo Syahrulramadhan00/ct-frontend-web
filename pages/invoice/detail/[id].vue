@@ -1,5 +1,7 @@
 <template>
   <div v-if="!pending" class="">
+    <ConfirmDialog></ConfirmDialog>
+
     <!-- TITLE SECTION -->
     <div class="flex justify-between">
       <div class="flex flex-1 items-start">
@@ -57,7 +59,7 @@
           <div class="flex justify-between">
             <div
               v-if="isInvoiceValid"
-              @click="addSale = true"
+              @click="setupAddSale()"
               class="main-container bg-purple-400 p-0 flex items-center shadow-md hover:cursor-pointer"
             >
               <p class="font-semibold mx-3 text-white">Tambah</p>
@@ -70,14 +72,15 @@
         <Column field="harga" header="Harga"></Column>
         <Column field="total" header="Total"></Column>
         <Column field="" header="Menu" v-if="isInvoiceValid">
-          <template #body="{}">
+          <template #body="{data}">
             <div class="flex">
               <div
-                class="shrink main-container bg-slate-100 p-0 px-6 py-1 mr-2"
+              @click="setupEditSale(data)"
+                class="shrink main-container bg-slate-100 p-0 px-6 py-1 mr-2 hover:cursor-pointer"
               >
                 <p class="font-semibold">Edit</p>
               </div>
-              <div class="shrink main-container bg-red-400 p-0 px-6 py-1">
+              <div @click="confirmDelete(data.id)" class="shrink main-container bg-red-400 p-0 px-6 py-1 hover:cursor-pointer">
                 <p class="font-semibold">Hapus</p>
               </div>
             </div>
@@ -302,12 +305,12 @@
     <Dialog
       v-model:visible="addSale"
       modal
-      header="Tambah barang ke invoice"
+      :header=" isUpdate ? 'Ubah barang' : 'Tambah barang ke invoice' "
       :style="{ width: '25rem' }"
     >
       <div class="flex flex-col">
-        <p class="mb-3">Pilih barang :</p>
-        <div class="w-80 ml-4">
+        <p v-if="!isUpdate" class="mb-3">Pilih barang :</p>
+        <div v-if="!isUpdate" class="w-80 ml-4">
           <Dropdown
             v-model="selectedProduct"
             :options="products"
@@ -328,6 +331,7 @@
         </FloatLabel>
         <div
           @click="
+          if(!isUpdate){
             addSales(
               {
                 invoiceId: invoice.ID,
@@ -336,13 +340,27 @@
                 price: productPrice,
               },
               async () => {
+                setupAddSale();
                 addSale = false;
-                selectedProduct = null;
-                productCount = null;
-                productPrice = null;
                 sales = await getAllSales(invoice.ID);
               }
-            )
+            );
+          } else {
+            updateSales(
+              {
+                id: selectedSale,
+                productId: selectedProduct.id,
+                count: productCount,
+                price: productPrice,
+                currentCount: currentCount,
+              },
+              async () => {
+                setupAddSale();
+                addSale = false;
+                sales = await getAllSales(invoice.ID);
+              }
+            );
+          }
           "
           class="main-container bg-purple-400 p-0 flex items-center justify-center h-10 shadow-md mt-5 hover:cursor-pointer"
         >
@@ -352,7 +370,7 @@
               strokeWidth="6"
             />
           </div>
-          <p v-else class="font-semibold mx-3 text-white">Tambah</p>
+          <p v-else class="font-semibold mx-3 text-white">{{ isUpdate ? "Ubah" : "Tambah"}}</p>
         </div>
       </div>
     </Dialog>
@@ -420,7 +438,7 @@ const {
   updateMainInformation,
   lockInvoice,
 } = InvoiceApi();
-const { pending: salePending, addSales, getAllSales } = SalesApi();
+const { pending: salePending, addSales, getAllSales, deleteSales, updateSales } = SalesApi();
 const { pending: productPending, getAllProduct } = ProductApi();
 
 const route = useRoute();
@@ -445,8 +463,48 @@ const selectedProduct = ref(null);
 const products = ref([]);
 const productCount = ref(null);
 const productPrice = ref(null);
+const isUpdate = ref(false);
+const currentCount = ref(null);
+const selectedSale = ref(null);
+function setupAddSale(){
+  isUpdate.value = false;
+  selectedProduct.value = null;
+  productCount.value = null;
+  productPrice.value = null;
+  addSale.value = true;
+}
+function setupEditSale(sale){
+  isUpdate.value = true;
+  selectedProduct.value = products.value.find(p => p.barang === sale.nama);
+  productCount.value = sale.jumlah;
+  productPrice.value = sale.harga;
+  selectedSale.value = sale.id;
+  currentCount.value = sale.jumlah;
+  addSale.value = true;
+}
 
 const isInvoiceValid = computed(() => {
   return invoice.value != null && invoice.value.InvoiceStatusId === 1;
 });
+
+const confirm = useConfirm();
+const confirmDelete = (id) => {
+    confirm.require({
+        message: 'Apakah ingin menghapus produk ini dari invoice?',
+        header: 'Hapus barang',
+        icon: 'pi pi-info-circle mr-2',
+        rejectLabel: 'Cancel',
+        acceptLabel: 'Delete',
+        rejectClass: 'bg-white border-none hover:border-solid hover:border-green-500 hover:bg-white',
+        acceptClass: 'bg-red-400 border-none focus:ring-0 hover:border-solid hover:border-green-500 hover:bg-red-400 hover:border-[3px]',
+        accept: () => {
+          deleteSales(id, async () => {
+            sales.value = await getAllSales(route.params.id);
+          });
+        },
+        reject: () => {
+        }
+    });
+};
+
 </script>
