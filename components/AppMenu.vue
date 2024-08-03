@@ -1,8 +1,8 @@
 <template>
   <div class="flex-none bg-white shadow-2xl rounded-lg w-48 h-[34rem] mr-3 p-3">
     <!-- Brand Tag -->
-    <div class="flex flex-row justify-evenly items-center mb-5">
-      <div class="bg-black w-7 h-7"></div>
+    <div class="flex flex-row justify-evenly items-center mb-5 mt-2">
+      <div class="w-6 h-6 bg-cover bg-[url('~/assets/img/logo-ct.png')]"></div>
       <p class="text-lg font-semibold">CahayaTeknik</p>
     </div>
     <!-- Menu -->
