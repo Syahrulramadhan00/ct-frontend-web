@@ -314,6 +314,8 @@
           <Dropdown
             v-model="selectedProduct"
             :options="products"
+            filter
+            filterIcon="ml-4 pi pi-search"
             optionLabel="barang"
             placeholder="pilihan barang"
             class="flex justify-between w-full items-center px-2"
