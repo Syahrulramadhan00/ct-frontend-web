@@ -2,7 +2,7 @@
   <div>
     <div class="flex">
       <div class="main-container grow h-[35rem] w-56">
-        <div v-if="penddeing" class="flex w-full h-full items-center justify-center">
+        <div v-if="pending" class="flex w-full h-full items-center justify-center">
 
           <ProgressSpinner/>
         </div>
@@ -80,11 +80,10 @@
             </template>
           </Column>
           <Column field="status" header="">
-            <template #body="{}">
+            <template #body="{ data }">
+              <NuxtLink :to="'/delivery/detail/' + data.id">
               <i class="pi pi-chevron-right"></i>
-              <!-- <p>
-                {{ data.status }}
-              </p> -->
+              </NuxtLink>
             </template>
           </Column>
         </DataTable>

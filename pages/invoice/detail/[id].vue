@@ -398,8 +398,8 @@ async function init() {
   sales.value = await getAllSales(route.params.id);
   products.value = await getAllProduct();
 
-  initFaktur();
-  initMainInformation();
+  await initFaktur();
+  await initMainInformation();
 }
 
 async function initFaktur() {
@@ -409,19 +409,19 @@ async function initFaktur() {
 }
 
 async function initMainInformation() {
-  poCode.value = invoice.value.PoCode == "" ? "-" : invoice.value.PoCode;
+  poCode.value = invoice.value.PoCode === "" ? "-" : invoice.value.PoCode;
   metodePembayaran.value =
-    invoice.value.PaymentMethod == "" ? "-" : invoice.value.PaymentMethod;
+    invoice.value.PaymentMethod === "" ? "-" : invoice.value.PaymentMethod;
   platformPembayran.value =
-    invoice.value.Platform == "" ? "-" : invoice.value.Platform;
+    invoice.value.Platform === "" ? "-" : invoice.value.Platform;
   nomorRekening.value =
-    invoice.value.PlatformNumber == "" ? "-" : invoice.value.PlatformNumber;
+    invoice.value.PlatformNumber === "" ? "-" : invoice.value.PlatformNumber;
   deskripsiPlatform.value =
-    invoice.value.PlatformDescription == ""
+    invoice.value.PlatformDescription === ""
       ? "-"
       : invoice.value.PlatformDescription;
-  namaPenjual.value = invoice.value.Seller == "" ? "-" : invoice.value.Seller;
-  catatan.value = invoice.value.Note == "" ? "-" : invoice.value.Note;
+  namaPenjual.value = invoice.value.Seller === "" ? "-" : invoice.value.Seller;
+  catatan.value = invoice.value.Note === "" ? "-" : invoice.value.Note;
 }
 
 const onAdvancedUpload = () => {

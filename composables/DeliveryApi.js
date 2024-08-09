@@ -30,9 +30,10 @@ export const DeliveryApi = () => {
 
     if (res.value.status == 200) {
       const body = await res.value.json();
-      const data = body.data.map((item) => {
+      const data = body.data.map((item, index) => {
         return {
-          no: item.ID,
+          id: item.ID,
+          no: index + 1,
           kode: item.OrderCode,
           klien: item.ClientName,
           jumlah: item.Total,
@@ -65,5 +66,20 @@ export const DeliveryApi = () => {
     }
   }
 
-  return { res, pending, getInvoices, getDeliveries, createDelivery };
+  async function getDelivery(deliveryId){
+    res.value = [];
+    url.value = `get-delivery/${deliveryId}`;
+    method.value = "GET";
+
+    await fetchApi();
+
+    if (res.value.status === 200) {
+      const body = await res.value.json();
+      return body.data;
+    } else {
+      return [];
+    }
+  }
+
+  return { res, pending, getInvoices, getDeliveries, createDelivery, getDelivery };
 };

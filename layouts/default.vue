@@ -19,7 +19,6 @@ import "primeicons/primeicons.css";
         </div>
       </div>
     </div>
-    <AppFooter />
     <div
       class="z-10 bg-sky-400 opacity-10 bg-fixed bg-cover bg-center h-screen blur-[128px] fixed top-0 left-0 right-0 bottom-0"
     ></div>
