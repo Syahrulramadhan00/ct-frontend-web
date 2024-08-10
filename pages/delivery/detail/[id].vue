@@ -52,7 +52,11 @@
           <div class="flex justify-between">
             <div
                 v-if="isInvoiceValid"
-                @click="showModal = true"
+                @click="async () => {
+                  await resetForm();
+                  isUpdate = false;
+                  showModal = true;
+                }"
                 class="main-container bg-purple-400 p-0 flex items-center shadow-md hover:cursor-pointer"
             >
               <p class="font-semibold mx-3 text-white">Tambah</p>
@@ -66,7 +70,13 @@
           <template #body="{data}">
             <div class="flex">
               <div
-                  @click="setupEditSale(data)"
+                  @click="()=> {
+                    resetForm();
+                    selectedProduct = data;
+                    saleCount = data.Quantity;
+                    isUpdate = true;
+                    showModal = true;
+                  }"
                   class="shrink main-container bg-slate-100 p-0 px-6 py-1 mr-2 hover:cursor-pointer"
               >
                 <p class="font-semibold">Edit</p>
@@ -123,22 +133,10 @@
           <label for="count">Jumlah barang</label>
         </FloatLabel>
         <div
-            @click="createDeliveryProduct(
-                {
-        id: route.params.id,
-        salesId : selectedSale.id,
-        quantity : saleCount
-                }, async () => {
-                  saleCount = null;
-                  selectedSale = null;
-                  showModal = false;
-                  products = await getDeliveryProducts(route.params.id);
-                  availableSales = await getAvailableSales(delivery.InvoiceId);
-                }
-            )"
+            @click="changeProduct()"
             class="main-container bg-purple-400 p-0 flex items-center justify-center h-10 shadow-md mt-5 hover:cursor-pointer"
         >
-          <div v-if="salePending" class="pt-1">
+          <div v-if="productPending" class="pt-1">
             <ProgressSpinner
                 style="width: 20px; height: 20px"
                 strokeWidth="6"
@@ -164,6 +162,7 @@ const showModal = ref(false);
 const isUpdate = ref(false);
 const selectedSale = ref(null);
 const saleCount = ref(null);
+const selectedProduct = ref(null);
 
 onMounted(() => {
   init();
@@ -171,8 +170,47 @@ onMounted(() => {
 
 async function init() {
   delivery.value = await getDelivery(route.params.id);
+
+  await resetProducts();
+}
+
+async function resetProducts() {
+  resetForm();
   products.value = await getDeliveryProducts(route.params.id);
   availableSales.value = await getAvailableSales(delivery.value.InvoiceId);
+}
+
+function resetForm(){
+  saleCount.value = null;
+  selectedSale.value = null;
+  selectedProduct.value = null;
+  showModal.value = false;
+}
+
+function changeProduct(){
+    if (isUpdate.value){
+      updateDeliveryProduct(
+          {
+            id: +selectedProduct.value.id,
+            current_quantity : +selectedProduct.value.Quantity,
+            quantity : +saleCount.value,
+            sale_id: selectedProduct.value.SaleId
+          }, async () => {
+            await resetProducts();
+          }
+      )
+    } else {
+      createDeliveryProduct(
+          {
+            id: route.params.id,
+            salesId : selectedSale.value.id,
+            quantity : saleCount.value
+          }, async () => {
+            await resetProducts();
+          }
+      )
+    }
+
 }
 
 const {
@@ -185,7 +223,8 @@ const {
   getDeliveryProducts,
   createDeliveryProduct,
   getAvailableSales,
-  deleteDeliveryProduct
+  deleteDeliveryProduct,
+    updateDeliveryProduct
 } = DeliveryProductApi();
 
 const confirm = useConfirm();
@@ -204,8 +243,7 @@ const confirmDelete = (data) => {
         quantity: data.Quantity,
         saleId: data.SaleId
       }, async () => {
-        products.value = await getDeliveryProducts(route.params.id);
-        availableSales.value = await getAvailableSales(delivery.value.InvoiceId);
+        await resetProducts();
       });
     },
     reject: () => {

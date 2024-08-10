@@ -86,5 +86,27 @@ export const DeliveryProductApi = () => {
         fallback();
     }
 
-    return {pending, getDeliveryProducts, createDeliveryProduct, getAvailableSales, deleteDeliveryProduct};
+    async function updateDeliveryProduct(deliveryData, fallback) {
+        res.value = [];
+        url.value = "update-delivery-product";
+        method.value = "PUT";
+        body.value = {
+            id: deliveryData.id,
+            quantity: deliveryData.quantity,
+            current_quantity: deliveryData.current_quantity,
+            sale_id: deliveryData.sale_id
+        };
+
+        await fetchApi();
+        fallback();
+    }
+
+    return {
+        pending,
+        getDeliveryProducts,
+        createDeliveryProduct,
+        getAvailableSales,
+        deleteDeliveryProduct,
+        updateDeliveryProduct
+    };
 }
