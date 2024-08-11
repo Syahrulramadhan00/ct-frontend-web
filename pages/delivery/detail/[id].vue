@@ -20,7 +20,7 @@
           </p>
         </div>
       </div>
-      <div v-if="isInvoiceValid">
+      <div v-if="isDeliveryValid">
         <div class="ml-2">
           <div
               class="main-container bg-black p-0 py-1 mb-2 justify-center rounded-2xl"
@@ -28,7 +28,12 @@
             <p class="text-white flex-1 text-center">Belum dikunci</p>
           </div>
           <div
-              @click=""
+              @click="lockDelivery({
+              delivery_id : delivery.ID,
+              invoice_id : delivery.InvoiceId
+              }, async () => {
+                await init();
+              })"
               class="main-container bg-purple-400 p-0 py-1 px-3 flex justify-evenly items-center hover:cursor-pointer"
           >
             <i class="pi pi-lock text-white mr-1"> </i>
@@ -51,7 +56,7 @@
         <template #header>
           <div class="flex justify-between">
             <div
-                v-if="isInvoiceValid"
+                v-if="isDeliveryValid"
                 @click="async () => {
                   await resetForm();
                   isUpdate = false;
@@ -66,7 +71,7 @@
         <Column field="no" header="No" style="width: 5%"></Column>
         <Column field="Name" header="Nama barang" style="width: 35%"></Column>
         <Column field="Quantity" header="Jumlah"></Column>
-        <Column field="" header="Menu" v-if="isInvoiceValid">
+        <Column field="" header="Menu" v-if="isDeliveryValid">
           <template #body="{data}">
             <div class="flex">
               <div
@@ -90,6 +95,107 @@
         </Column>
       </DataTable>
       <ProgressSpinner v-else/>
+    </div>
+
+    <!-- MAIN INFORMATION SECTION  -->
+    <div class="flex mt-5 gap-5 flex-wrap-reverse">
+      <div class="flex-1">
+        <!-- COURIER SECTION -->
+        <div class="main-container">
+          <p class="mb-3 font-semibold text-lg">Kurir pengiriman</p>
+          <Dropdown
+              v-model="selectedCourier"
+              :options="couriers"
+              filter
+              :disabled="!isDeliveryValid"
+              filterIcon="ml-4 pi pi-search"
+              optionLabel="username"
+              placeholder="pilihan kurir"
+              class="flex justify-between w-full items-center px-2"
+              panelClass="bg-white rounded-lg px-2 hover:cursor-pointer drop-shadow-lg"
+              :virtualScrollerOptions="{ itemSize: 38 }"
+          />
+          <div
+              @click="updateSender({
+                id: delivery.ID,
+                sender: selectedCourier.id
+              }, async () => {
+                await initCouriers();
+              })"
+              v-if="isDeliveryValid"
+              class="main-container bg-purple-400 p-0 py-1 px-3 flex justify-center items-center my-5 hover:cursor-pointer"
+          >
+            <div v-if="pending" class="pt-1">
+              <ProgressSpinner
+                  style="width: 20px; height: 20px"
+                  strokeWidth="6"
+              />
+            </div>
+            <p v-else class="text-white">Simpan</p>
+          </div>
+        </div>
+
+        <!-- DOCUMENT SECTION -->
+        <div class="main-container mt-5">
+          <p class="mb-3 font-semibold text-lg">Dokumen pengiriman</p>
+          <div class="border-dashed border-2 rounded px-3 py-5 h-32 flex items-center justify-center">
+            <p class="text-gray-500">Dokumen pengiriman belum diunggah</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="main-container flex-1 min-w-96">
+        <!-- DESTINATION SECTION -->
+
+        <FloatLabel class="mt-4">
+          <InputText
+              id="destination"
+              v-model="destination"
+              class="w-96 md:w-80"
+              :disabled="!isDeliveryValid"
+          />
+          <label for="discount">Tujuan lokasi pengiriman</label>
+        </FloatLabel>
+
+
+        <!-- NOTE SECTION -->
+        <FloatLabel class="mt-8">
+              <Textarea
+                  v-model="catatan"
+                  rows="5"
+                  cols="30"
+                  class="md:w-64 lg:w-96 sm:w-56"
+              />
+          <label for="catatan">catatan</label>
+        </FloatLabel>
+
+        <div
+            @click="showNote = true"
+            class="main-container bg-transparent border-2 shadow-none border-black p-0 py-1 px-3 flex justify-center items-center mt-10 hover:cursor-pointer"
+        >
+          <p>lihat note sebelumnya</p>
+        </div>
+
+        <div
+            @click="updateDeliveryInformation({
+              delivery_id: delivery.ID,
+              place: destination,
+              note: catatan
+            }, async () => {
+              delivery = await getDelivery(route.params.id);
+              await initMainInformation();
+            })"
+            class="main-container bg-purple-400 p-0 py-1 px-3 flex justify-center items-center mt-4 hover:cursor-pointer"
+        >
+          <div v-if="pending" class="pt-1">
+            <ProgressSpinner
+                style="width: 20px; height: 20px"
+                strokeWidth="6"
+            />
+          </div>
+          <p class="text-white">Simpan</p>
+        </div>
+      </div>
     </div>
 
     <!-- MODAL SECTION -->
@@ -147,15 +253,28 @@
       </div>
     </Dialog>
 
+    <!-- PREVIOUS NOTES SECTION -->
+    <Dialog
+        v-model:visible="showNote"
+        modal
+        header="Catatan sebelumnya"
+        :style="{ width: '25rem' }"
+    >
+      <div class="flex flex-col mt-4 items-center justify-center">
+        <p>{{ previousNote ? previousNote : "tidak ada catatan" }}</p>
+      </div>
+    </Dialog>
+
   </div>
 </template>
 
 <script setup>
 import {onMounted} from "vue";
+import {UserApi} from "~/composables/UserApi.js";
 
 const route = useRoute();
 const delivery = ref(null);
-const isInvoiceValid = ref(true);
+const isDeliveryValid = ref(true);
 const products = ref([]);
 const availableSales = ref([]);
 const showModal = ref(false);
@@ -163,6 +282,12 @@ const isUpdate = ref(false);
 const selectedSale = ref(null);
 const saleCount = ref(null);
 const selectedProduct = ref(null);
+const couriers = ref(null);
+const selectedCourier = ref(null);
+const destination = ref(null);
+const catatan = ref(null);
+const showNote = ref(false);
+const previousNote = ref(null);
 
 onMounted(() => {
   init();
@@ -170,8 +295,12 @@ onMounted(() => {
 
 async function init() {
   delivery.value = await getDelivery(route.params.id);
+  previousNote.value = await getPreviousNote(route.params.id);
+  isDeliveryValid.value = delivery.value.Status === 1;
 
   await resetProducts();
+  await initCouriers();
+  await initMainInformation();
 }
 
 async function resetProducts() {
@@ -180,42 +309,56 @@ async function resetProducts() {
   availableSales.value = await getAvailableSales(delivery.value.InvoiceId);
 }
 
-function resetForm(){
+async function initMainInformation() {
+  destination.value = delivery.value.Place;
+  catatan.value = delivery.value.Note;
+}
+
+async function initCouriers() {
+  couriers.value = await getAllVerified();
+  selectedCourier.value = couriers.value.find(courier => courier.id === delivery.value.SenderId);
+}
+
+function resetForm() {
   saleCount.value = null;
   selectedSale.value = null;
   selectedProduct.value = null;
   showModal.value = false;
 }
 
-function changeProduct(){
-    if (isUpdate.value){
-      updateDeliveryProduct(
-          {
-            id: +selectedProduct.value.id,
-            current_quantity : +selectedProduct.value.Quantity,
-            quantity : +saleCount.value,
-            sale_id: selectedProduct.value.SaleId
-          }, async () => {
-            await resetProducts();
-          }
-      )
-    } else {
-      createDeliveryProduct(
-          {
-            id: route.params.id,
-            salesId : selectedSale.value.id,
-            quantity : saleCount.value
-          }, async () => {
-            await resetProducts();
-          }
-      )
-    }
+function changeProduct() {
+  if (isUpdate.value) {
+    updateDeliveryProduct(
+        {
+          id: +selectedProduct.value.id,
+          current_quantity: +selectedProduct.value.Quantity,
+          quantity: +saleCount.value,
+          sale_id: selectedProduct.value.SaleId
+        }, async () => {
+          await resetProducts();
+        }
+    )
+  } else {
+    createDeliveryProduct(
+        {
+          id: route.params.id,
+          salesId: selectedSale.value.id,
+          quantity: saleCount.value
+        }, async () => {
+          await resetProducts();
+        }
+    )
+  }
 
 }
 
 const {
   pending,
   getDelivery,
+  updateSender,
+  updateDeliveryInformation,
+  getPreviousNote,
+  lockDelivery
 } = DeliveryApi();
 
 const {
@@ -224,8 +367,13 @@ const {
   createDeliveryProduct,
   getAvailableSales,
   deleteDeliveryProduct,
-    updateDeliveryProduct
+  updateDeliveryProduct
 } = DeliveryProductApi();
+
+const {
+  pending: userPending,
+  getAllVerified
+} = UserApi();
 
 const confirm = useConfirm();
 const confirmDelete = (data) => {
