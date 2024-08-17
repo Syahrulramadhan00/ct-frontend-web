@@ -106,9 +106,9 @@ const { fetchApi, res, url } = FetchUtils();
 
 url.value = "token-validator";
 
-onMounted(() => {
+onMounted(async () => {
   tagihan.value = DummyService.getTagihanData();
-  fetchApi();
+  await fetchApi();
 });
 
 const tagihan = ref();

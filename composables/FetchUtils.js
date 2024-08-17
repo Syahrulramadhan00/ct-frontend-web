@@ -10,6 +10,8 @@ export default function FetchUtils() {
   const router = useRouter();
   const pending = ref(false);
 
+  const err = ref(null);
+
   const baseApiUrl = useRuntimeConfig().public.apiBaseUrl;
   const apiUrlString = typeof baseApiUrl === "string" ? baseApiUrl : "";
 
@@ -51,8 +53,15 @@ export default function FetchUtils() {
       res.value = response;
       return res;
     } catch (error) {
-      console.error("[ERROR]:", error);
+      err.value = error;
     } finally {
+      if (err.value instanceof TypeError) {
+        await router.push("/offline");
+        console.error(`[ERROR]: Server tidak dapat dijangkau. `);
+      } else {
+        console.error("[ERROR]: Terjadi kesalahan lainnya.");
+      }
+
       pending.value = false;
     }
   };
