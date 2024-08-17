@@ -80,8 +80,6 @@ export const DeliveryProductApi = () => {
             sale_id : deliveryData.saleId,
         };
 
-        console.log(body.value);
-
         await fetchApi();
         fallback();
     }
