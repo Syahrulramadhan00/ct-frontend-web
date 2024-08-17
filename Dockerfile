@@ -1,15 +1,31 @@
-FROM node:18-alpine
+ARG NODE_VERSION=18.14.2
 
-WORKDIR /app
+FROM node:${NODE_VERSION}-slim as base
 
-COPY package*.json ./
+ARG PORT=3000
 
-RUN npm install
+ENV NODE_ENV=production
 
-COPY . .
+WORKDIR /src
+
+# Build
+FROM base as build
+
+COPY --link package.json package-lock.json .
+RUN npm install --production=false
+
+COPY --link . .
 
 RUN npm run build
+RUN npm prune
 
-EXPOSE 3000
+# Run
+FROM base
 
-CMD ["node", ".output/server/index.mjs"]
+ENV PORT=$PORT
+
+COPY --from=build /src/.output /src/.output
+# Optional, only needed if you rely on unbundled dependencies
+# COPY --from=build /src/node_modules /src/node_modules
+
+CMD [ "node", ".output/server/index.mjs" ]

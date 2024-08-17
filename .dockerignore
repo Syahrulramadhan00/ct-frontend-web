@@ -1,9 +1,6 @@
-node_modules
-npm-debug.log
-yarn-error.log
-.pnpm-debug.log
-dist
-.cache
-output
-*.log
-.DS_Store
+/.nuxt
+/.output
+/node_modules
+
+.gitignore
+README.md
