@@ -24,5 +24,19 @@ export const ClientApi = () => {
     }
   }
 
-  return { res, pending, getClients };
+  async function getReceiptClients() {
+    res.value = [];
+    url.value = "get-client-receipts";
+    method.value = "GET";
+
+    await fetchApi();
+    if (res.value.status === 200) {
+      const body = await res.value.json();
+      return body.data;
+    } else {
+      return [];
+    }
+  }
+
+  return { res, pending, getClients, getReceiptClients };
 };

@@ -121,6 +121,26 @@ export const InvoiceApi = () => {
     fallback();
   }
 
+  async function getReceiptInvoices(id) {
+    res.value = [];
+    url.value = `get-receipt-invoices/${id}`;
+    method.value = "GET";
+
+    await fetchApi();
+
+    if (res.value.status == 200) {
+      const body = await res.value.json();
+
+      if (body.data == null) {
+        return [];
+      }
+
+      return body.data;
+    } else {
+      return [];
+    }
+  }
+
   return {
     res,
     pending,
@@ -130,5 +150,6 @@ export const InvoiceApi = () => {
     updateFaktur,
     updateMainInformation,
     lockInvoice,
+    getReceiptInvoices,
   };
 };
