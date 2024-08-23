@@ -18,7 +18,7 @@ export const AuthApi = () => {
 
     await fetchApi();
 
-    if (res.value.status == 200) {
+    if (res.value.status === 200) {
       storeOtp.setEmailOtp(email.value);
       router.push("/auth/otp");
     }
@@ -76,7 +76,7 @@ export const AuthApi = () => {
 
     await fetchApi();
 
-    if (res.value.status == 200) {
+    if (res.value.status === 200) {
       requestOtp(emailData);
     }
   }

@@ -18,7 +18,7 @@ export default function FetchUtils() {
   const fetchApi = async () => {
     try {
       pending.value = true;
-      let response = null;
+      let response;
 
       if (method.value === "GET") {
         response = await fetch(`${apiUrlString}/${url.value}`, {
