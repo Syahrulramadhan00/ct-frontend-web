@@ -187,8 +187,11 @@ onMounted(() => {
 
 async function init() {
   invoices.value = await getInvoices();
+  invoiceCode.value = route.query.invoice_code;
   deliveries.value = await getDeliveries(1, invoiceCode.value);
 }
+
+const route = useRoute();
 
 const deliveries = ref();
 const filters = ref({

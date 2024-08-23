@@ -35,6 +35,18 @@
           </div>
         </div>
       </div>
+
+      <!--  SURAT JALAN BUTTON  -->
+      <div v-else>
+        <div class="ml-2">
+          <div
+              @click="seeDelivery"
+              class="main-container bg-purple-400 p-0 py-1 px-3 flex justify-evenly items-center hover:cursor-pointer"
+          >
+            <p class="text-white">Lihat surat jalan</p>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- STEPPER SECTION -->
@@ -444,6 +456,7 @@ const { pending: salePending, addSales, getAllSales, deleteSales, updateSales } 
 const { pending: productPending, getAllProduct } = ProductApi();
 
 const route = useRoute();
+const router = useRouter();
 
 const invoice = ref(null);
 const product = ref();
@@ -508,5 +521,11 @@ const confirmDelete = (id) => {
         }
     });
 };
+
+async function seeDelivery(){
+  const data =  {invoice_code : invoice.value?.InvoiceCode};
+  const queryString = new URLSearchParams(data).toString();
+  await router.push(`/delivery?${queryString}` );
+}
 
 </script>
