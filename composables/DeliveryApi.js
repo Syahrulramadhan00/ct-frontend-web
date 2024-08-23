@@ -22,11 +22,12 @@ export const DeliveryApi = () => {
         }
     }
 
-    async function getDeliveries(page) {
+    async function getDeliveries(page, invoiceCode) {
         res.value = [];
         url.value = "get-all-delivery";
         queryParams.value = {
             page: page ?? 1,
+            order_code : invoiceCode ?? "",
         };
         method.value = "GET";
 
