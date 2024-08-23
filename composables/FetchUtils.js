@@ -15,11 +15,6 @@ export default function FetchUtils() {
   const baseApiUrl = useRuntimeConfig().public.apiBaseUrl;
   const apiUrlString = typeof baseApiUrl === "string" ? baseApiUrl : "";
 
-  const tokenCookie = useCookie("token");
-  if (tokenCookie.value == null) {
-    tokenCookie.value = "";
-  }
-
   const fetchApi = async () => {
     try {
       pending.value = true;
@@ -30,7 +25,7 @@ export default function FetchUtils() {
           method: method.value,
           headers: {
             "Content-Type": "application/json",
-            Authorization: tokenCookie.value,
+            Authorization: localStorage.getItem("token"),
           },
         });
       } else {
@@ -39,13 +34,13 @@ export default function FetchUtils() {
           body: JSON.stringify(body.value),
           headers: {
             "Content-Type": "application/json",
-            Authorization: tokenCookie.value,
+            Authorization: localStorage.getItem("token"),
           },
         });
       }
 
-      if (response.status == 401) {
-        tokenCookie.value = null;
+      if (response.status === 401) {
+        localStorage.setItem("token", "");
         router.push("/auth");
         return;
       }

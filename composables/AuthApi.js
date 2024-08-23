@@ -36,15 +36,14 @@ export const AuthApi = () => {
 
     await fetchApi();
 
-    if (res.value.status == 428) {
+    if (res.value.status === 428) {
       res.value = [];
       requestOtp(emailData);
     }
 
-    if (res.value.status == 200) {
+    if (res.value.status === 200) {
       const data = await res.value.json();
-      const tokenCookie = useCookie("token");
-      tokenCookie.value = data.data.token;
+      localStorage.setItem("token", data.data.token);
       router.push("/");
     }
   }
@@ -57,10 +56,9 @@ export const AuthApi = () => {
 
     await fetchApi();
 
-    if (res.value.status == 200) {
+    if (res.value.status === 200) {
       const data = await res.value.json();
-      const tokenCookie = useCookie("token");
-      tokenCookie.value = data.data.token;
+        localStorage.setItem("token", data.data.token);
       router.push("/");
     }
   }

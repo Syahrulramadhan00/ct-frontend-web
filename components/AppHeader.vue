@@ -37,7 +37,6 @@
 <script setup>
 import { useRouter } from "vue-router";
 
-const tokenCookie = useCookie("token");
 const router = useRouter();
 
 const menu = ref();
@@ -49,7 +48,7 @@ const items = ref([
         label: "Logout",
         icon: "pi pi-sign-out",
         command: () => {
-          tokenCookie.value = "";
+          localStorage.setItem("token", "");
           router.push("/auth");
         },
       },
