@@ -1,11 +1,14 @@
 import FetchUtils from "~/composables/FetchUtils";
 
 export const DeliveryApi = () => {
-    const {fetchApi, res, url, pending, method, body} = FetchUtils();
+    const {fetchApi, res, url, pending, method, body, queryParams} = FetchUtils();
     const {formatDate} = Util();
+
+    const pageInfo = ref({});
 
     async function getInvoices() {
         res.value = [];
+        queryParams.value = {};
         url.value = "delivery/get-available-invoices";
         method.value = "GET";
 
@@ -19,15 +22,19 @@ export const DeliveryApi = () => {
         }
     }
 
-    async function getDeliveries() {
+    async function getDeliveries(page) {
         res.value = [];
         url.value = "get-all-delivery";
+        queryParams.value = {
+            page: page ?? 1,
+        };
         method.value = "GET";
 
         await fetchApi();
 
         if (res.value.status === 200) {
             const body = await res.value.json();
+            pageInfo.value = body.meta;
           return body.data.map((item, index) => {
               return {
                 id: item.ID,
@@ -61,6 +68,7 @@ export const DeliveryApi = () => {
     async function getDelivery(deliveryId) {
         res.value = [];
         url.value = `get-delivery/${deliveryId}`;
+        queryParams.value = {};
         method.value = "GET";
 
         await fetchApi();
@@ -103,6 +111,7 @@ export const DeliveryApi = () => {
     async function getPreviousNote(id) {
         res.value = [];
         url.value = `get-previous-note/${id}`;
+        queryParams.value = {};
         method.value = "GET";
 
         await fetchApi();
@@ -138,6 +147,7 @@ export const DeliveryApi = () => {
         updateSender,
         updateDeliveryInformation,
         getPreviousNote,
-        lockDelivery
+        lockDelivery,
+        pageInfo
     };
 };

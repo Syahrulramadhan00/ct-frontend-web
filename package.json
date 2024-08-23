@@ -12,6 +12,7 @@
   "dependencies": {
     "@nuxt/image": "^1.7.0",
     "@pinia/nuxt": "^0.5.2",
+    "@vueuse/core": "^11.0.1",
     "nuxt": "^3.12.3",
     "pinia": "^2.2.0",
     "primeicons": "^7.0.0",

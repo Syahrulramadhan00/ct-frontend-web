@@ -6,6 +6,7 @@ export default function FetchUtils() {
 
   const method = ref("GET");
   const body = ref({});
+  const queryParams = ref({});
   const url = ref("");
   const router = useRouter();
   const pending = ref(false);
@@ -21,7 +22,9 @@ export default function FetchUtils() {
       let response;
 
       if (method.value === "GET") {
-        response = await fetch(`${apiUrlString}/${url.value}`, {
+        const query = new URLSearchParams(queryParams.value).toString();
+
+        response = await fetch(`${apiUrlString}/${url.value}?${query}`, {
           method: method.value,
           headers: {
             "Content-Type": "application/json",
@@ -61,5 +64,5 @@ export default function FetchUtils() {
     }
   };
 
-  return { res, fetchApi, method, body, url, pending };
+  return { res, fetchApi, method, body, url, pending, queryParams };
 }
