@@ -6,7 +6,7 @@
     <div class="flex justify-between">
       <div class="flex flex-1 items-start">
         <NuxtLink to="/invoice"
-          ><i class="pi pi-chevron-left text-lg ml-5 mr-4 pt-1"> </i
+        ><i class="pi pi-chevron-left text-lg ml-5 mr-4 pt-1"> </i
         ></NuxtLink>
         <div>
           <p class="font-bold text-lg">
@@ -18,17 +18,17 @@
       <div v-if="isInvoiceValid">
         <div class="ml-2">
           <div
-            class="main-container bg-black p-0 py-1 mb-2 justify-center rounded-2xl"
+              class="main-container bg-black p-0 py-1 mb-2 justify-center rounded-2xl"
           >
             <p class="text-white flex-1 text-center">Belum dikunci</p>
           </div>
           <div
-            @click="
+              @click="
               lockInvoice(invoice.ID, async () => {
                 invoice = await getInvoice(route.params.id);
               })
             "
-            class="main-container bg-purple-400 p-0 py-1 px-3 flex justify-evenly items-center hover:cursor-pointer"
+              class="main-container bg-purple-400 p-0 py-1 px-3 flex justify-evenly items-center hover:cursor-pointer"
           >
             <i class="pi pi-lock text-white mr-1"> </i>
             <p class="text-white">Simpan akhir</p>
@@ -52,27 +52,27 @@
     <!-- STEPPER SECTION -->
     <div class="flex main-container mt-8">
       <InvoiceStepper
-        :activeIndex="invoice ? invoice.InvoiceStatusId - 2 : -1"
-        class="flex-1"
+          :activeIndex="invoice ? invoice.InvoiceStatusId - 2 : -1"
+          class="flex-1"
       />
     </div>
 
     <!-- PRODUCT SECTION -->
     <div class="flex main-container mt-5">
       <DataTable
-        v-if="!salePending"
-        :value="sales"
-        scrollable
-        scrollHeight="18rem"
-        tableStyle="min-width: 2rem"
-        class="flex-1 w-0"
+          v-if="!salePending"
+          :value="sales"
+          scrollable
+          scrollHeight="18rem"
+          tableStyle="min-width: 2rem"
+          class="flex-1 w-0"
       >
         <template #header>
           <div class="flex justify-between">
             <div
-              v-if="isInvoiceValid"
-              @click="setupAddSale()"
-              class="main-container bg-purple-400 p-0 flex items-center shadow-md hover:cursor-pointer"
+                v-if="isInvoiceValid"
+                @click="setupAddSale()"
+                class="main-container bg-purple-400 p-0 flex items-center shadow-md hover:cursor-pointer"
             >
               <p class="font-semibold mx-3 text-white">Tambah</p>
             </div>
@@ -87,19 +87,20 @@
           <template #body="{data}">
             <div class="flex">
               <div
-              @click="setupEditSale(data)"
-                class="shrink main-container bg-slate-100 p-0 px-6 py-1 mr-2 hover:cursor-pointer"
+                  @click="setupEditSale(data)"
+                  class="shrink main-container bg-slate-100 p-0 px-6 py-1 mr-2 hover:cursor-pointer"
               >
                 <p class="font-semibold">Edit</p>
               </div>
-              <div @click="confirmDelete(data.id)" class="shrink main-container bg-red-400 p-0 px-6 py-1 hover:cursor-pointer">
+              <div @click="confirmDelete(data.id)"
+                   class="shrink main-container bg-red-400 p-0 px-6 py-1 hover:cursor-pointer">
                 <p class="font-semibold">Hapus</p>
               </div>
             </div>
           </template>
         </Column>
       </DataTable>
-      <ProgressSpinner v-else />
+      <ProgressSpinner v-else/>
     </div>
 
     <div class="flex mt-5 gap-5 flex-wrap-reverse">
@@ -108,12 +109,12 @@
         <div class="main-container">
           <p class="mb-3 font-semibold text-lg">Dokumen surat PO</p>
           <FileUpload
-            name="demo[]"
-            url="/api/upload"
-            @upload="onAdvancedUpload($event)"
-            :multiple="true"
-            accept="image/*"
-            :maxFileSize="1000000"
+              name="demo[]"
+              url="/api/upload"
+              @upload="onAdvancedUpload($event)"
+              :multiple="true"
+              accept="image/*"
+              :maxFileSize="1000000"
           >
             <template #empty>
               <p>Drag and drop files to here to upload.</p>
@@ -123,12 +124,12 @@
         <div class="main-container mt-5">
           <p class="mb-3 font-semibold text-lg">Dokumen surat Faktur</p>
           <FileUpload
-            name="demo[]"
-            url="/api/upload"
-            @upload="onAdvancedUpload($event)"
-            :multiple="true"
-            accept="image/*"
-            :maxFileSize="1000000"
+              name="demo[]"
+              url="/api/upload"
+              @upload="onAdvancedUpload($event)"
+              :multiple="true"
+              accept="image/*"
+              :maxFileSize="1000000"
           >
             <template #empty>
               <p>Drag and drop files to here to upload.</p>
@@ -143,21 +144,21 @@
         <div class="flex flex-wrap gap-3">
           <div class="flex align-items-center">
             <RadioButton
-              v-model="faktur"
-              inputId="ya"
-              name="faktur"
-              value="ya"
-              :disabled="!isInvoiceValid"
+                v-model="faktur"
+                inputId="ya"
+                name="faktur"
+                value="ya"
+                :disabled="!isInvoiceValid"
             />
             <label for="faktur1" class="ml-2">Ya</label>
           </div>
           <div class="flex align-items-center">
             <RadioButton
-              v-model="faktur"
-              inputId="tidak"
-              name="faktur"
-              value="tidak"
-              :disabled="!isInvoiceValid"
+                v-model="faktur"
+                inputId="tidak"
+                name="faktur"
+                value="tidak"
+                :disabled="!isInvoiceValid"
             />
             <label for="faktur2" class="ml-2">Tidak</label>
           </div>
@@ -166,10 +167,10 @@
         <div class="flex items-end">
           <FloatLabel class="mt-8">
             <InputText
-              id="discount"
-              v-model="discount"
-              class="w-96 md:w-80"
-              :disabled="!isInvoiceValid"
+                id="discount"
+                v-model="discount"
+                class="w-96 md:w-80"
+                :disabled="!isInvoiceValid"
             />
             <label for="discount">Presentasi diskon</label>
           </FloatLabel>
@@ -180,10 +181,10 @@
         <div class="flex items-end">
           <FloatLabel class="mt-8">
             <InputText
-              id="jangkaPembayaran"
-              v-model="jangkaPembayaran"
-              class="w-96 md:w-80"
-              :disabled="!isInvoiceValid"
+                id="jangkaPembayaran"
+                v-model="jangkaPembayaran"
+                class="w-96 md:w-80"
+                :disabled="!isInvoiceValid"
             />
             <label for="jangkaPembayaran">Jangka pembayaran</label>
           </FloatLabel>
@@ -191,8 +192,8 @@
         </div>
 
         <div
-          v-if="isInvoiceValid"
-          @click="
+            v-if="isInvoiceValid"
+            @click="
             updateFaktur(
               {
                 invoice_id: invoice.ID,
@@ -206,7 +207,7 @@
               }
             )
           "
-          class="main-container bg-purple-400 p-0 py-1 px-3 flex justify-center items-center mt-10 hover:cursor-pointer"
+            class="main-container bg-purple-400 p-0 py-1 px-3 flex justify-center items-center mt-10 hover:cursor-pointer"
         >
           <p class="text-white">Simpan</p>
         </div>
@@ -219,29 +220,30 @@
         <div class="flex-1">
           <FloatLabel class="mt-4">
             <InputText
-              id="poCode"
-              v-model="poCode"
-              class="lg:w-96 md:w-64"
-              :disabled="!isInvoiceValid"
+                id="poCode"
+                v-model="poCode"
+                class="lg:w-96 md:w-64"
+                :disabled="!isInvoiceValid"
             />
             <label for="poCode">kode pre-order</label>
           </FloatLabel>
           <FloatLabel class="mt-8">
             <InputText
-              id="namaPenjual"
-              v-model="namaPenjual"
-              class="md:w-64 lg:w-96"
-              :disabled="!isInvoiceValid"
+                v-tooltip.focus.top="'contoh : Imam S'"
+                id="namaPenjual"
+                v-model="namaPenjual"
+                class="md:w-64 lg:w-96"
+                :disabled="!isInvoiceValid"
             />
             <label for="namaPenjual">Nama penjual</label>
           </FloatLabel>
           <div class="mt-8">
             <FloatLabel>
               <Textarea
-                v-model="catatan"
-                rows="5"
-                cols="30"
-                class="md:w-64 lg:w-96 sm:w-56"
+                  v-model="catatan"
+                  rows="5"
+                  cols="30"
+                  class="md:w-64 lg:w-96 sm:w-56"
               />
               <label>Catatan</label>
             </FloatLabel>
@@ -250,37 +252,40 @@
         <div class="flex-1">
           <FloatLabel class="mt-4">
             <InputText
-              id="metodePembayaran"
-              v-model="metodePembayaran"
-              class="md:w-64 lg:w-96"
-              :disabled="!isInvoiceValid"
+                v-tooltip.focus.top="'contoh : Transfer'"
+                id="metodePembayaran"
+                v-model="metodePembayaran"
+                class="md:w-64 lg:w-96"
+                :disabled="!isInvoiceValid"
             />
             <label for="metodePembayaran">Metode pembayaran</label>
           </FloatLabel>
           <FloatLabel class="mt-8">
             <InputText
-              id="platformPembayran"
-              v-model="platformPembayran"
-              class="md:w-64 lg:w-96"
-              :disabled="!isInvoiceValid"
+                v-tooltip.focus.top="'contoh : BCA'"
+                id="platformPembayran"
+                v-model="platformPembayran"
+                class="md:w-64 lg:w-96"
+                :disabled="!isInvoiceValid"
             />
             <label for="platformPembayran">Platform pembayaran</label>
           </FloatLabel>
           <FloatLabel class="mt-8">
             <InputText
-              id="nomorRekening"
-              v-model="nomorRekening"
-              class="md:w-64 lg:w-96"
-              :disabled="!isInvoiceValid"
+                id="nomorRekening"
+                v-model="nomorRekening"
+                class="md:w-64 lg:w-96"
+                :disabled="!isInvoiceValid"
             />
             <label for="nomorRekening">Nomor rekening</label>
           </FloatLabel>
           <FloatLabel class="mt-8">
             <InputText
-              id="deskripsiPlatform"
-              v-model="deskripsiPlatform"
-              class="md:w-64 lg:w-96"
-              :disabled="!isInvoiceValid"
+                v-tooltip.focus.top="'contoh : Safitri'"
+                id="deskripsiPlatform"
+                v-model="deskripsiPlatform"
+                class="md:w-64 lg:w-96"
+                :disabled="!isInvoiceValid"
             />
             <label for="deskripsiPlatform">Deskripsi platform</label>
           </FloatLabel>
@@ -288,7 +293,7 @@
       </div>
       <div class="flex w-full justify-center">
         <div
-          @click="
+            @click="
             updateMainInformation(
               {
                 invoice_id: invoice.ID,
@@ -302,11 +307,11 @@
               },
               async () => {
                 invoice = await getInvoice(route.params.id);
-                initMainInformation();
+                await initMainInformation();
               }
             )
           "
-          class="main-container bg-purple-400 p-0 py-1 px-3 mx-24 flex flex-1 justify-center items-center mt-8 hover:cursor-pointer"
+            class="main-container bg-purple-400 p-0 py-1 px-3 mx-24 flex flex-1 justify-center items-center mt-8 hover:cursor-pointer"
         >
           <p class="text-white">Simpan</p>
         </div>
@@ -315,36 +320,36 @@
 
     <!-- ADD SALES SECTION -->
     <Dialog
-      v-model:visible="addSale"
-      modal
-      :header=" isUpdate ? 'Ubah barang' : 'Tambah barang ke invoice' "
-      :style="{ width: '25rem' }"
+        v-model:visible="addSale"
+        modal
+        :header=" isUpdate ? 'Ubah barang' : 'Tambah barang ke invoice' "
+        :style="{ width: '25rem' }"
     >
       <div class="flex flex-col">
         <p v-if="!isUpdate" class="mb-3">Pilih barang :</p>
         <div v-if="!isUpdate" class="w-80 ml-4">
           <Dropdown
-            v-model="selectedProduct"
-            :options="products"
-            filter
-            filterIcon="ml-4 pi pi-search"
-            optionLabel="barang"
-            placeholder="pilihan barang"
-            class="flex justify-between w-full items-center px-2"
-            panelClass="bg-white rounded-lg px-2 hover:cursor-pointer drop-shadow-lg"
-            :virtualScrollerOptions="{ itemSize: 38 }"
+              v-model="selectedProduct"
+              :options="products"
+              filter
+              filterIcon="ml-4 pi pi-search"
+              optionLabel="barang"
+              placeholder="pilihan barang"
+              class="flex justify-between w-full items-center px-2"
+              panelClass="bg-white rounded-lg px-2 hover:cursor-pointer drop-shadow-lg"
+              :virtualScrollerOptions="{ itemSize: 38 }"
           />
         </div>
         <FloatLabel class="mt-8">
-          <InputText id="count" v-model="productCount" class="w-[22rem]" />
+          <InputText id="count" v-model="productCount" class="w-[22rem]"/>
           <label for="count">Jumlah barang</label>
         </FloatLabel>
         <FloatLabel class="mt-8">
-          <InputText id="price" v-model="productPrice" class="w-[22rem]" />
+          <InputText id="price" v-model="productPrice" class="w-[22rem]"/>
           <label for="price">Harga satuan</label>
         </FloatLabel>
         <div
-          @click="
+            @click="
           if(!isUpdate){
             addSales(
               {
@@ -376,29 +381,29 @@
             );
           }
           "
-          class="main-container bg-purple-400 p-0 flex items-center justify-center h-10 shadow-md mt-5 hover:cursor-pointer"
+            class="main-container bg-purple-400 p-0 flex items-center justify-center h-10 shadow-md mt-5 hover:cursor-pointer"
         >
           <div v-if="salePending" class="pt-1">
             <ProgressSpinner
-              style="width: 20px; height: 20px"
-              strokeWidth="6"
+                style="width: 20px; height: 20px"
+                strokeWidth="6"
             />
           </div>
-          <p v-else class="font-semibold mx-3 text-white">{{ isUpdate ? "Ubah" : "Tambah"}}</p>
+          <p v-else class="font-semibold mx-3 text-white">{{ isUpdate ? "Ubah" : "Tambah" }}</p>
         </div>
       </div>
     </Dialog>
   </div>
   <div
-    v-else
-    class="main-container w-full h-full flex justify-center items-center"
+      v-else
+      class="main-container w-full h-full flex justify-center items-center"
   >
-    <ProgressSpinner />
+    <ProgressSpinner/>
   </div>
 </template>
-    
-    <script setup>
-import { DummyService } from "@/service/DummyService";
+
+<script setup>
+import {DummyService} from "@/service/DummyService";
 
 onMounted(() => {
   product.value = DummyService.getInvoiceProduct();
@@ -423,15 +428,15 @@ async function initFaktur() {
 async function initMainInformation() {
   poCode.value = invoice.value.PoCode === "" ? "-" : invoice.value.PoCode;
   metodePembayaran.value =
-    invoice.value.PaymentMethod === "" ? "-" : invoice.value.PaymentMethod;
+      invoice.value.PaymentMethod === "" ? "-" : invoice.value.PaymentMethod;
   platformPembayran.value =
-    invoice.value.Platform === "" ? "-" : invoice.value.Platform;
+      invoice.value.Platform === "" ? "-" : invoice.value.Platform;
   nomorRekening.value =
-    invoice.value.PlatformNumber === "" ? "-" : invoice.value.PlatformNumber;
+      invoice.value.PlatformNumber === "" ? "-" : invoice.value.PlatformNumber;
   deskripsiPlatform.value =
-    invoice.value.PlatformDescription === ""
-      ? "-"
-      : invoice.value.PlatformDescription;
+      invoice.value.PlatformDescription === ""
+          ? "-"
+          : invoice.value.PlatformDescription;
   namaPenjual.value = invoice.value.Seller === "" ? "-" : invoice.value.Seller;
   catatan.value = invoice.value.Note === "" ? "-" : invoice.value.Note;
 }
@@ -452,8 +457,8 @@ const {
   updateMainInformation,
   lockInvoice,
 } = InvoiceApi();
-const { pending: salePending, addSales, getAllSales, deleteSales, updateSales } = SalesApi();
-const { pending: productPending, getAllProduct } = ProductApi();
+const {pending: salePending, addSales, getAllSales, deleteSales, updateSales} = SalesApi();
+const {pending: productPending, getAllProduct} = ProductApi();
 
 const route = useRoute();
 const router = useRouter();
@@ -481,14 +486,16 @@ const productPrice = ref(null);
 const isUpdate = ref(false);
 const currentCount = ref(null);
 const selectedSale = ref(null);
-function setupAddSale(){
+
+function setupAddSale() {
   isUpdate.value = false;
   selectedProduct.value = null;
   productCount.value = null;
   productPrice.value = null;
   addSale.value = true;
 }
-function setupEditSale(sale){
+
+function setupEditSale(sale) {
   isUpdate.value = true;
   selectedProduct.value = products.value.find(p => p.barang === sale.nama);
   productCount.value = sale.jumlah;
@@ -504,28 +511,28 @@ const isInvoiceValid = computed(() => {
 
 const confirm = useConfirm();
 const confirmDelete = (id) => {
-    confirm.require({
-        message: 'Apakah ingin menghapus produk ini dari invoice?',
-        header: 'Hapus barang',
-        icon: 'pi pi-info-circle mr-2',
-        rejectLabel: 'Cancel',
-        acceptLabel: 'Delete',
-        rejectClass: 'bg-white border-none hover:border-solid hover:border-green-500 hover:bg-white',
-        acceptClass: 'bg-red-400 border-none focus:ring-0 hover:border-solid hover:border-green-500 hover:bg-red-400 hover:border-[3px]',
-        accept: () => {
-          deleteSales(id, async () => {
-            sales.value = await getAllSales(route.params.id);
-          });
-        },
-        reject: () => {
-        }
-    });
+  confirm.require({
+    message: 'Apakah ingin menghapus produk ini dari invoice?',
+    header: 'Hapus barang',
+    icon: 'pi pi-info-circle mr-2',
+    rejectLabel: 'Cancel',
+    acceptLabel: 'Delete',
+    rejectClass: 'bg-white border-none hover:border-solid hover:border-green-500 hover:bg-white',
+    acceptClass: 'bg-red-400 border-none focus:ring-0 hover:border-solid hover:border-green-500 hover:bg-red-400 hover:border-[3px]',
+    accept: () => {
+      deleteSales(id, async () => {
+        sales.value = await getAllSales(route.params.id);
+      });
+    },
+    reject: () => {
+    }
+  });
 };
 
-async function seeDelivery(){
-  const data =  {invoice_code : invoice.value?.InvoiceCode};
+async function seeDelivery() {
+  const data = {invoice_code: invoice.value?.InvoiceCode};
   const queryString = new URLSearchParams(data).toString();
-  await router.push(`/delivery?${queryString}` );
+  await router.push(`/delivery?${queryString}`);
 }
 
 </script>
