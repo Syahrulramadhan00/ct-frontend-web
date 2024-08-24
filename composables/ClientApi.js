@@ -9,16 +9,15 @@ export const ClientApi = () => {
     method.value = "GET";
 
     await fetchApi();
-    if (res.value.status == 200) {
+    if (res.value.status === 200) {
       const body = await res.value.json();
-      const data = body.data.map((item) => {
+      return body.data.map((item, index) => {
         return {
+          no: index + 1,
           id: item.id,
           name: item.name,
         };
       });
-
-      return data;
     } else {
       return [];
     }
@@ -38,5 +37,30 @@ export const ClientApi = () => {
     }
   }
 
-  return { res, pending, getClients, getReceiptClients };
+  async function addClient(name, callback) {
+    res.value = [];
+    url.value = "create-client";
+    method.value = "POST";
+    body.value = {
+      name: name,
+    };
+
+    await fetchApi();
+    callback();
+  }
+
+  async function updateClient(data, callback){
+    res.value = [];
+    url.value = "update-client";
+    method.value = "PUT";
+    body.value = {
+      id: data.id,
+      name: data.name,
+    };
+
+    await fetchApi();
+    callback();
+  }
+
+  return { res, pending, getClients, getReceiptClients, addClient, updateClient };
 };
