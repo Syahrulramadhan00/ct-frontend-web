@@ -91,7 +91,6 @@
 
 <script setup>
 import { FilterMatchMode } from "primevue/api";
-import { PurchaseApi } from "~/composables/PurchaseApi";
 
 onMounted(() => {
   init();
