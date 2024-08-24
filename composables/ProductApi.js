@@ -24,7 +24,7 @@ export const ProductApi = () => {
     method.value = "GET";
 
     await fetchApi();
-    if (res.value.status == 200) {
+    if (res.value.status === 200) {
       const body = await res.value.json();
       const data = body.data.map((item, index) => {
         return {
@@ -32,7 +32,7 @@ export const ProductApi = () => {
           no: index + 1,
           barang: item.Name,
           stok: item.Stock.toString(),
-          status: item.Stock === 0 ? "Habis" : "Tersedia",
+          status: item.Stock === 0 ? "Habis" : item.Stock <= 0 ? "Perlu restock" :"Tersedia",
         };
       });
 
