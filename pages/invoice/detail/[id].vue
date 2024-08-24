@@ -220,6 +220,15 @@
         <div class="flex-1">
           <FloatLabel class="mt-4">
             <InputText
+                id="project"
+                v-model="project"
+                class="lg:w-96 md:w-64"
+                :disabled="!isInvoiceValid"
+            />
+            <label for="project">nama proyek</label>
+          </FloatLabel>
+          <FloatLabel class="mt-8">
+            <InputText
                 id="poCode"
                 v-model="poCode"
                 class="lg:w-96 md:w-64"
@@ -245,12 +254,27 @@
                   cols="30"
                   class="md:w-64 lg:w-96 sm:w-56"
               />
-              <label>Catatan</label>
+              <label v-if="isInvoiceValid">Catatan</label>
+              <label v-else>Catatan  <span class="text-red-500">(bisa diubah)</span></label>
             </FloatLabel>
           </div>
         </div>
         <div class="flex-1">
-          <FloatLabel class="mt-4">
+
+            <div class="bg-white rounded">
+              <label for="date" class="block text-sm font-medium text-gray-500 mb-2">Pilih Tanggal <span v-if="!isInvoiceValid" class="text-red-500">(bisa diubah)</span></label>
+              <input
+                  type="date"
+                  id="date"
+                  :value="date"
+                  @change="closeDatePicker"
+                  @blur="closeDatePicker"
+                  ref="datePickerRef"
+                  class="w-full px-3 py-2 md:w-64 lg:w-96 border border-gray-200 rounded-md focus:outline-none focus:ring-lime-500 focus:border-lime-500 sm:text-sm"
+              />
+            </div>
+
+          <FloatLabel class="mt-8">
             <InputText
                 v-tooltip.focus.top="'contoh : Transfer'"
                 id="metodePembayaran"
@@ -304,6 +328,8 @@
                 platform_description: deskripsiPlatform,
                 seller: namaPenjual,
                 note: catatan,
+                project : project,
+                date : date
               },
               async () => {
                 invoice = await getInvoice(route.params.id);
@@ -404,11 +430,14 @@
 
 <script setup>
 import {DummyService} from "@/service/DummyService";
+import {Util} from "~/composables/Util.js";
 
 onMounted(() => {
   product.value = DummyService.getInvoiceProduct();
   init();
 });
+
+const {formatDateYMD} = Util();
 
 async function init() {
   invoice.value = await getInvoice(route.params.id);
@@ -439,6 +468,8 @@ async function initMainInformation() {
           : invoice.value.PlatformDescription;
   namaPenjual.value = invoice.value.Seller === "" ? "-" : invoice.value.Seller;
   catatan.value = invoice.value.Note === "" ? "-" : invoice.value.Note;
+  project.value = invoice.value.ProjectName === "" ? "-" : invoice.value.ProjectName;
+  date.value = invoice.value.Date === "" ? "" : formatDateYMD(invoice.value.Date);
 }
 
 const onAdvancedUpload = () => {
@@ -476,6 +507,8 @@ const nomorRekening = ref("");
 const deskripsiPlatform = ref("");
 const namaPenjual = ref("");
 const catatan = ref("");
+const project = ref("");
+const date = ref(null);
 
 const sales = ref([]);
 const addSale = ref(false);
@@ -534,5 +567,12 @@ async function seeDelivery() {
   const queryString = new URLSearchParams(data).toString();
   await router.push(`/delivery?${queryString}`);
 }
+
+const closeDatePicker = (event) => {
+  date.value = event.target.value;
+  datePickerRef.value.blur();
+};
+
+const datePickerRef = ref(null);
 
 </script>

@@ -50,6 +50,10 @@ export default {
         "surface-900": "rgb(var(--surface-900))",
         "surface-950": "rgb(var(--surface-950))",
       },
+      spacing: {
+        'a4-width': '210mm',
+        'a4-height': '297mm',
+      },
     },
   },
   plugins: [require("tailwindcss-primeui")],

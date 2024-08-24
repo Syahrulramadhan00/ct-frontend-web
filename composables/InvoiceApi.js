@@ -66,7 +66,7 @@ export const InvoiceApi = () => {
 
     await fetchApi();
 
-    if (res.value.status == 200) {
+    if (res.value.status === 200) {
       const body = await res.value.json();
       return body.data;
     }
@@ -102,6 +102,8 @@ export const InvoiceApi = () => {
       payment_method: invoiceData.payment_method,
       platform_description: invoiceData.platform_description,
       platform_number: invoiceData.platform_number,
+      project : invoiceData.project,
+      date : invoiceData.date
     };
 
     await fetchApi();
