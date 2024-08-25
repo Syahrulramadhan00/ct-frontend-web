@@ -51,7 +51,7 @@
                 'main-container bg-black p-0 px-2 py-1 flex justify-center rounded-2xl':
                   data.kodeStatus === 1,
                 'main-container bg-red-500 p-0 px-2 py-1 flex justify-center rounded-2xl':
-                  data.kodeStatus != 8 && data.kodeStatus != 1,
+                  data.kodeStatus !== 8 && data.kodeStatus !== 1,
               }"
             >
               <p class="text-white">

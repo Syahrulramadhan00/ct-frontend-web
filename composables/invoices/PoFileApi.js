@@ -14,7 +14,7 @@ export const PoFileApi = () => {
             formData.append("data", req.data);
             const baseApiUrl = useRuntimeConfig().public.apiBaseUrl;
             const apiUrlString = typeof baseApiUrl === "string" ? baseApiUrl : "";
-            const {data, error} = await useFetch(`${apiUrlString}/update-po-file/${req.id}`, {
+            const {data} = await useFetch(`${apiUrlString}/update-po-file/${req.id}`, {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -35,7 +35,7 @@ export const PoFileApi = () => {
         pending.value = true;
         const baseApiUrl = useRuntimeConfig().public.apiBaseUrl;
         const apiUrlString = typeof baseApiUrl === "string" ? baseApiUrl : "";
-        const {data, error} = await useFetch(`${apiUrlString}/get-po-url`, {
+        const {data} = await useFetch(`${apiUrlString}/get-po-url`, {
             method: 'POST',
             headers: {
                 Authorization: localStorage.getItem("token"),

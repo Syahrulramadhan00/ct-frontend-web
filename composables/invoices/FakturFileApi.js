@@ -14,7 +14,7 @@ export const FakturFileApi = () => {
             formData.append("data", req.data);
             const baseApiUrl = useRuntimeConfig().public.apiBaseUrl;
             const apiUrlString = typeof baseApiUrl === "string" ? baseApiUrl : "";
-            const {data, error} = await useFetch(`${apiUrlString}/update-faktur-file/${req.id}`, {
+            const {data} = await useFetch(`${apiUrlString}/update-faktur-file/${req.id}`, {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -35,7 +35,7 @@ export const FakturFileApi = () => {
         pending.value = true;
         const baseApiUrl = useRuntimeConfig().public.apiBaseUrl;
         const apiUrlString = typeof baseApiUrl === "string" ? baseApiUrl : "";
-        const {data, error} = await useFetch(`${apiUrlString}/get-faktur-url`, {
+        const {data} = await useFetch(`${apiUrlString}/get-faktur-url`, {
             method: 'POST',
             headers: {
                 Authorization: localStorage.getItem("token"),

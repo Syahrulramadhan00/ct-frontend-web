@@ -1,7 +1,7 @@
 import FetchUtils from "~/composables/FetchUtils.js";
 
 export const InvoiceApi = () => {
-  const { fetchApi, res, url, pending, method, body , fileInput} = FetchUtils();
+  const { fetchApi, res, url, pending, method, body} = FetchUtils();
 
   async function createInvoice(clientIdData, fallback) {
     res.value = [];
@@ -25,14 +25,14 @@ export const InvoiceApi = () => {
     method.value = "GET";
 
     await fetchApi();
-    if (res.value.status == 200) {
+    if (res.value.status === 200) {
       const body = await res.value.json();
 
       if (body.data == null) {
         return [];
       }
 
-      const data = body.data.map((item, index) => {
+      return body.data.map((item, index) => {
         return {
           id: item.ID,
           no: index + 1,
@@ -43,8 +43,6 @@ export const InvoiceApi = () => {
           kodeStatus: item.StatusId,
         };
       });
-
-      return data;
     } else {
       return [];
     }
