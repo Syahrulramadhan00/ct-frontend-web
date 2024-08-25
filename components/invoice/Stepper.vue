@@ -23,9 +23,9 @@ export default {
   data() {
     return {
       steps: [
+        "buat PO",
         "Finalisasi",
         "barang terkirim",
-        "buat PO",
         "buat faktur",
         "masuk tt",
         "pembayaran",

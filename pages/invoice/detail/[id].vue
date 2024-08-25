@@ -24,11 +24,7 @@
             <p class="text-white flex-1 text-center">Belum dikunci</p>
           </div>
           <div
-              @click="
-              lockInvoice(invoice.ID, async () => {
-                invoice = await getInvoice(route.params.id);
-              })
-            "
+              @click="lock()"
               class="main-container bg-purple-400 p-0 py-1 px-3 flex justify-evenly items-center hover:cursor-pointer"
           >
             <i class="pi pi-lock text-white mr-1"> </i>
@@ -135,13 +131,16 @@
           </FileUpload>
         </div>
         <div class="main-container mt-5">
+          <div class="flex items-baseline">
           <p class="mb-3 font-semibold text-lg">Dokumen surat Faktur</p>
+            <p v-if="!isFakturInactive" class="text-gray-700 ml-2">(belum aktif)</p>
+          </div>
           <FileUpload
               name="demo[]"
               @uploader="uploadFaktur($event)"
               :multiple="true"
               :customUpload="true"
-              :disabled="!isInvoiceValid"
+              :disabled="!isFakturInactive"
               accept="application/pdf"
               :maxFileSize="1000000"
           >
@@ -400,38 +399,7 @@
           <label for="price">Harga satuan</label>
         </FloatLabel>
         <div
-            @click="
-          if(!isUpdate){
-            addSales(
-              {
-                invoiceId: invoice.ID,
-                productId: selectedProduct.id,
-                count: productCount,
-                price: productPrice,
-              },
-              async () => {
-                setupAddSale();
-                addSale = false;
-                sales = await getAllSales(invoice.ID);
-              }
-            );
-          } else {
-            updateSales(
-              {
-                id: selectedSale,
-                productId: selectedProduct.id,
-                count: productCount,
-                price: productPrice,
-                currentCount: currentCount,
-              },
-              async () => {
-                setupAddSale();
-                addSale = false;
-                sales = await getAllSales(invoice.ID);
-              }
-            );
-          }
-          "
+            @click="addOrUpdateSale()"
             class="main-container bg-purple-400 p-0 flex items-center justify-center h-10 shadow-md mt-5 hover:cursor-pointer"
         >
           <div v-if="salePending" class="pt-1">
@@ -508,7 +476,7 @@ const {
   updateMainInformation,
   lockInvoice,
 } = InvoiceApi();
-const {pending: salePending, getAllSales, deleteSales} = SalesApi();
+const {pending: salePending, getAllSales, deleteSales, addSales, updateSales} = SalesApi();
 const {getAllProduct} = ProductApi();
 
 const route = useRoute();
@@ -559,7 +527,11 @@ function setupEditSale(sale) {
 }
 
 const isInvoiceValid = computed(() => {
-  return invoice.value != null && invoice.value.InvoiceStatusId === 1;
+  return invoice.value != null && invoice.value.InvoiceStatusId < 3;
+});
+
+const isFakturInactive = computed(() => {
+  return invoice.value != null && invoice.value.InvoiceStatusId > 4 && invoice.value.InvoiceStatusId < 7;
 });
 
 const confirm = useConfirm();
@@ -615,6 +587,7 @@ const uploadFile = async (event) => {
         life: 3000,
       });
       invoice.value.PoPath = result.value.data;
+      invoice.value.InvoiceStatusId = 2;
     }
   });
 };
@@ -642,6 +615,9 @@ const uploadFaktur = async (event) => {
         life: 3000,
       });
       invoice.value.FacturePath = fakturResult.value.data;
+      if(invoice.value.InvoiceStatusId < 5) {
+        invoice.value.InvoiceStatusId = 5;
+      }
     }
   });
 };
@@ -652,5 +628,52 @@ async function openFakturUrl() {
   });
 }
 
+async function addOrUpdateSale(){
+  if(!isUpdate.value){
+    await addSales(
+        {
+          invoiceId: invoice.value.ID,
+          productId: selectedProduct.value.id,
+          count: productCount.value,
+          price: productPrice.value,
+        },
+        async () => {
+          setupAddSale();
+          addSale.value = false;
+          sales.value = await getAllSales(invoice.value.ID);
+        }
+    );
+  } else {
+    await updateSales(
+        {
+          id: selectedSale.value,
+          productId: selectedProduct.value.id,
+          count: productCount.value,
+          price: productPrice.value,
+          currentCount: currentCount.value,
+        },
+        async () => {
+          setupAddSale();
+          addSale.value = false;
+          sales.value = await getAllSales(invoice.value.ID);
+        }
+    );
+  }
+}
+
+async function lock(){
+  if (invoice.value.InvoiceStatusId < 2){
+    toast.add({
+      severity: 'error',
+      summary: 'PO kosong',
+      detail: 'isi terlebih dahulu dokumen PO',
+      life: 3000,
+    });
+  } else {
+  await lockInvoice(invoice.value.ID, async () => {
+    invoice.value = await getInvoice(route.params.id);
+  })
+  }
+}
 
 </script>

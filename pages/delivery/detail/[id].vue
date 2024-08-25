@@ -222,14 +222,14 @@
             <template #value="slotProps">
               <div v-if="slotProps.value" class="flex align-items-center">
                 <div class="mr-2">{{ slotProps.value.Name }}</div>
-                <div>(sisa : {{ slotProps.value.Count }})</div>
+                <div>(belum terkirim : {{ slotProps.value.Count }})</div>
               </div>
               <span v-else>Pilihan barang</span>
             </template>
             <template #option="slotProps">
               <div class="flex align-items-center">
                 <div class="mr-2">{{ slotProps.option.Name }}</div>
-                <div>(sisa : {{ slotProps.option.Count }})</div>
+                <div>(belum terkirim : {{ slotProps.option.Count }})</div>
               </div>
             </template>
           </Dropdown>
