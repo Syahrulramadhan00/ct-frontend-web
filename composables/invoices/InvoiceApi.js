@@ -1,7 +1,7 @@
-import FetchUtils from "~/composables/FetchUtils";
+import FetchUtils from "~/composables/FetchUtils.js";
 
 export const InvoiceApi = () => {
-  const { fetchApi, res, url, pending, method, body } = FetchUtils();
+  const { fetchApi, res, url, pending, method, body , fileInput} = FetchUtils();
 
   async function createInvoice(clientIdData, fallback) {
     res.value = [];
@@ -14,7 +14,7 @@ export const InvoiceApi = () => {
 
     await fetchApi();
 
-    if (res.value.status == 200) {
+    if (res.value.status === 200) {
       await fallback();
     }
   }
@@ -130,7 +130,7 @@ export const InvoiceApi = () => {
 
     await fetchApi();
 
-    if (res.value.status == 200) {
+    if (res.value.status === 200) {
       const body = await res.value.json();
 
       if (body.data == null) {

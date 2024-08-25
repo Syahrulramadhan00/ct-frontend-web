@@ -116,6 +116,7 @@
 
 <script setup>
 import { FilterMatchMode } from "primevue/api";
+import {InvoiceApi} from "~/composables/invoices/InvoiceApi.js";
 
 onMounted(() => {
   init();

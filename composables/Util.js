@@ -17,5 +17,15 @@ export const Util = () => {
     return `${year}-${month}-${day}`;
   }
 
-  return { formatDate, formatDateYMD };
+  function adjustFile(file){
+    const now = new Date();
+    const dateTimeString = now.toISOString().replace(/[-:.]/g, "").slice(0, 15);
+    const fileName = file.name;
+    const baseName = fileName.replace(".pdf", "").split(/[\s:.-]+/).pop();
+    const newFileName = `${baseName}_${dateTimeString}.pdf`;
+
+    return new File([file], newFileName, { type: file.type });
+  }
+
+  return { formatDate, formatDateYMD, adjustFile };
 };

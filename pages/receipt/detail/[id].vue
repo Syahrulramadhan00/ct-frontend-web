@@ -123,6 +123,7 @@
 import { ref, onMounted } from "vue";
 import { FilterMatchMode } from "primevue/api";
 import "primeicons/primeicons.css";
+import {InvoiceApi} from "~/composables/invoices/InvoiceApi.js";
 
 
 onMounted(async () => {

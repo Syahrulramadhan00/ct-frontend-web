@@ -10,6 +10,7 @@ export default function FetchUtils() {
   const url = ref("");
   const router = useRouter();
   const pending = ref(false);
+  const fileInput = ref(null);
 
   const err = ref(null);
 
@@ -28,6 +29,17 @@ export default function FetchUtils() {
           method: method.value,
           headers: {
             "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token"),
+          },
+        });
+      } else if (method.value === "POSTFD") {
+        const formData = new FormData();
+        formData.append("file", fileInput);
+        formData.append("data", "fufufu");
+        response = await fetch(`${apiUrlString}/${url.value}`, {
+          method: "POST",
+          body: formData,
+          headers: {
             Authorization: localStorage.getItem("token"),
           },
         });
@@ -64,5 +76,5 @@ export default function FetchUtils() {
     }
   };
 
-  return { res, fetchApi, method, body, url, pending, queryParams };
+  return { res, fetchApi, method, body, url, pending, queryParams, fileInput };
 }

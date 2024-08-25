@@ -1,6 +1,7 @@
 <template>
   <div v-if="!pending" class="">
     <ConfirmDialog></ConfirmDialog>
+    <Toast />
 
     <!-- TITLE SECTION -->
     <div class="flex justify-between">
@@ -110,14 +111,26 @@
           <p class="mb-3 font-semibold text-lg">Dokumen surat PO</p>
           <FileUpload
               name="demo[]"
-              url="/api/upload"
-              @upload="onAdvancedUpload($event)"
+              @uploader="uploadFile($event)"
               :multiple="true"
-              accept="image/*"
+              :customUpload="true"
+              :disabled="!isInvoiceValid"
+              accept="application/pdf"
               :maxFileSize="1000000"
           >
             <template #empty>
-              <p>Drag and drop files to here to upload.</p>
+              <div class="flex items-center justify-center">
+
+              <ProgressSpinner v-if="PoFilePending"/>
+              <div
+                  @click="openPoUrl()"
+                  v-else-if="invoice?.PoPath !== null && invoice?.PoPath !== ''"
+                  class="main-container w-36 bg-primary opcaity-60 p-0 py-1 flex justify-center items-center hover:cursor-pointer"
+              >
+                <p class="font-bold">Lihat Dokumen</p>
+              </div>
+              <p v-else>Drag and drop files to here to upload.</p>
+              </div>
             </template>
           </FileUpload>
         </div>
@@ -125,14 +138,26 @@
           <p class="mb-3 font-semibold text-lg">Dokumen surat Faktur</p>
           <FileUpload
               name="demo[]"
-              url="/api/upload"
-              @upload="onAdvancedUpload($event)"
+              @uploader="uploadFaktur($event)"
               :multiple="true"
-              accept="image/*"
+              :customUpload="true"
+              :disabled="!isInvoiceValid"
+              accept="application/pdf"
               :maxFileSize="1000000"
           >
             <template #empty>
-              <p>Drag and drop files to here to upload.</p>
+              <div class="flex items-center justify-center">
+
+                <ProgressSpinner v-if="fakturFilePending"/>
+                <div
+                    @click="openFakturUrl()"
+                    v-else-if="invoice?.FacturePath !== null && invoice?.FacturePath !== ''"
+                    class="main-container w-36 bg-primary opcaity-60 p-0 py-1 flex justify-center items-center hover:cursor-pointer"
+                >
+                  <p class="font-bold">Lihat Dokumen</p>
+                </div>
+                <p v-else>Drag and drop files to here to upload.</p>
+              </div>
             </template>
           </FileUpload>
         </div>
@@ -199,11 +224,11 @@
                 invoice_id: invoice.ID,
                 discount: discount,
                 payment_term: jangkaPembayaran,
-                is_taxable: faktur === 'ya' ? true : false,
+                is_taxable: faktur === 'ya',
               },
               async () => {
                 invoice = await getInvoice(route.params.id);
-                initFaktur();
+                await initFaktur();
               }
             )
           "
@@ -431,6 +456,9 @@
 <script setup>
 import {DummyService} from "@/service/DummyService";
 import {Util} from "~/composables/Util.js";
+import {PoFileApi} from "~/composables/invoices/PoFileApi.js";
+import {InvoiceApi} from "~/composables/invoices/InvoiceApi.js";
+import {FakturFileApi} from "~/composables/invoices/FakturFileApi.js";
 
 onMounted(() => {
   product.value = DummyService.getInvoiceProduct();
@@ -438,6 +466,7 @@ onMounted(() => {
 });
 
 const {formatDateYMD} = Util();
+const toast = useToast();
 
 async function init() {
   invoice.value = await getInvoice(route.params.id);
@@ -472,15 +501,6 @@ async function initMainInformation() {
   date.value = invoice.value.Date === "" ? "" : formatDateYMD(invoice.value.Date);
 }
 
-const onAdvancedUpload = () => {
-  toast.add({
-    severity: "info",
-    summary: "Success",
-    detail: "File Uploaded",
-    life: 3000,
-  });
-};
-
 const {
   pending,
   getInvoice,
@@ -488,8 +508,8 @@ const {
   updateMainInformation,
   lockInvoice,
 } = InvoiceApi();
-const {pending: salePending, addSales, getAllSales, deleteSales, updateSales} = SalesApi();
-const {pending: productPending, getAllProduct} = ProductApi();
+const {pending: salePending, getAllSales, deleteSales} = SalesApi();
+const {getAllProduct} = ProductApi();
 
 const route = useRoute();
 const router = useRouter();
@@ -574,5 +594,63 @@ const closeDatePicker = (event) => {
 };
 
 const datePickerRef = ref(null);
+
+const {error,result, pending : PoFilePending, postFile, getUrl } = PoFileApi();
+const {error : fakturError,result : fakturResult, pending : fakturFilePending, postFile : postFaktur, getUrl : getFaktur } = FakturFileApi();
+
+const uploadFile = async (event) => {
+  await postFile( {file : event.files[0], id : route.params.id, data : invoice?.value?.PoPath} , async () => {
+    if (error.value !== null) {
+      toast.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: error.value,
+        life: 3000,
+      });
+    } else {
+      toast.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'File berhasil diupload',
+        life: 3000,
+      });
+      invoice.value.PoPath = result.value.data;
+    }
+  });
+};
+
+async function openPoUrl() {
+  await getUrl(invoice.value.PoPath, async ()=>{
+    await window.open(result.value.data, '_blank');
+  });
+}
+
+const uploadFaktur = async (event) => {
+  await postFaktur( {file : event.files[0], id : route.params.id, data : invoice?.value?.FacturePath} , async () => {
+    if (error.value !== null) {
+      toast.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: error.value,
+        life: 3000,
+      });
+    } else {
+      toast.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'File berhasil diupload',
+        life: 3000,
+      });
+      invoice.value.FacturePath = fakturResult.value.data;
+    }
+  });
+};
+
+async function openFakturUrl() {
+  await getFaktur(invoice.value.FacturePath, async ()=>{
+    window.open(fakturResult.value.data, '_blank');
+  });
+}
+
 
 </script>
