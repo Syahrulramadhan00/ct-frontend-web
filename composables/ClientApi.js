@@ -16,6 +16,8 @@ export const ClientApi = () => {
           no: index + 1,
           id: item.id,
           name: item.name,
+          address : item.place,
+          telephone : item.telephone
         };
       });
     } else {
@@ -37,12 +39,14 @@ export const ClientApi = () => {
     }
   }
 
-  async function addClient(name, callback) {
+  async function addClient(data, callback) {
     res.value = [];
     url.value = "create-client";
     method.value = "POST";
     body.value = {
-      name: name,
+      name: data.name,
+      address : data.address,
+      telephone : data.telephone
     };
 
     await fetchApi();
@@ -56,6 +60,8 @@ export const ClientApi = () => {
     body.value = {
       id: data.id,
       name: data.name,
+      address : data.address,
+      telephone : data.telephone
     };
 
     await fetchApi();

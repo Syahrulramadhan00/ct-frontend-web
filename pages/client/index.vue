@@ -24,7 +24,7 @@
             </div>
             <IconField iconPosition="left">
               <InputIcon>
-                <i class="pi pi-search" />
+                <i class="pi pi-search"/>
               </InputIcon>
               <InputText
                   v-model="filters['global'].value"
@@ -48,6 +48,8 @@
                     isUpdate = true;
                     clientName = data.name;
                     selectedId = data.id;
+                    address = data.address;
+                    telephone = data.telephone;
                     clientModal = true;
                   }"
                   class="shrink main-container bg-slate-100 p-0 px-6 py-1 mr-2 hover:cursor-pointer"
@@ -69,8 +71,16 @@
     >
       <div class="flex flex-col">
         <FloatLabel class="mt-8">
-          <InputText id="clientName" v-model="clientName" class="w-[22rem]" />
+          <InputText id="clientName" v-model="clientName" class="w-[22rem]"/>
           <label for="clientName">Nama client </label>
+        </FloatLabel>
+        <FloatLabel class="mt-8">
+          <InputText id="address" v-model="address" class="w-[22rem]"/>
+          <label for="address">Alamat </label>
+        </FloatLabel>
+        <FloatLabel class="mt-8">
+          <InputText id="telephone" v-model="telephone" class="w-[22rem]"/>
+          <label for="telephone">No telephone </label>
         </FloatLabel>
         <div
             @click="isUpdate ? onUpdateClient() : onAddClient()"
@@ -82,7 +92,7 @@
                 strokeWidth="6"
             />
           </div>
-          <p v-else class="font-semibold mx-3 text-white">{{ isUpdate ? "Ubah" : "Tambah"}}</p>
+          <p v-else class="font-semibold mx-3 text-white">{{ isUpdate ? "Ubah" : "Tambah" }}</p>
         </div>
       </div>
     </Dialog>
@@ -90,48 +100,59 @@
 </template>
 
 <script setup>
-import { FilterMatchMode } from "primevue/api";
+import {FilterMatchMode} from "primevue/api";
 
 onMounted(() => {
   init();
 });
 
-async function init(){
+async function init() {
   clients.value = await getClients();
 }
 
-const { pending: clientPending, getClients, addClient, updateClient } = ClientApi();
+const {pending: clientPending, getClients, addClient, updateClient} = ClientApi();
 
-async function onAddClient(){
-  await addClient(clientName.value, async () => {
-    clientModal.value = false;
-    clientName.value = null;
-    clients.value = await getClients();
+async function onAddClient() {
+  await addClient({
+    name : clientName.value,
+    address : address.value,
+    telephone : telephone.value
+  }, async () => {
+    await resetForm();
   });
 }
 
-async function onUpdateClient(){
+async function onUpdateClient() {
   await updateClient({
-    id : selectedId.value,
-    name: clientName.value
+    id: selectedId.value,
+    name: clientName.value,
+    address: address.value,
+    telephone: telephone.value
   }, async () => {
-    clientModal.value = false;
-    isUpdate.value = false;
-    clientName.value = null;
-    clients.value = await getClients();
+    await resetForm();
   });
+}
+
+async function resetForm() {
+  clientModal.value = false;
+  clientName.value = null;
+  address.value = null;
+  telephone.value = null;
+  clients.value = await getClients();
 }
 
 
 const filters = ref({
-  global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  no: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-  name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+  global: {value: null, matchMode: FilterMatchMode.CONTAINS},
+  no: {value: null, matchMode: FilterMatchMode.STARTS_WITH},
+  name: {value: null, matchMode: FilterMatchMode.STARTS_WITH},
 });
 
 const clientModal = ref(false);
 const isUpdate = ref(false);
 const clients = ref([]);
 const clientName = ref(null);
+const address = ref(null);
+const telephone = ref(null);
 const selectedId = ref(null);
 </script>
