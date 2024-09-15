@@ -65,7 +65,7 @@ definePageMeta({
     </div>
 
     <!--  DISCOUNT  -->
-    <div class="z-100 absolute ml-[105mm] mt-[159mm]">
+    <div class="z-100 absolute ml-[110mm] mt-[159mm]">
       <p class="text-sm">10%</p>
     </div>
 
