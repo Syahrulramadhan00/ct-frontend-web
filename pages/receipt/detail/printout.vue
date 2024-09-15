@@ -22,10 +22,10 @@ definePageMeta({
     <div class="z-100 absolute ml-[150mm] mt-[20mm]">
       <p class="text-sm">04</p>
     </div>
-    <div class="z-100 absolute ml-[40mm] mt-[35mm]">
+    <div class="z-100 absolute ml-[38mm] mt-[30mm]">
       <p class="text-lg">177/X/SAM/SBY/22</p>
     </div>
-    <div class="z-100 absolute ml-[120mm] mt-[25mm]">
+    <div class="z-100 absolute ml-[120mm] mt-[30mm]">
       <p class="text-sm">PT Sinergi Makmur Sentosa</p>
       <p class="text-sm">Raya Gding Pantai 31 sby</p>
     </div>
@@ -60,17 +60,17 @@ definePageMeta({
 
 
     <!--  ROW 3  -->
-    <div class="z-100 absolute ml-[130mm] mt-[150mm]">
+    <div class="z-100 absolute ml-[130mm] mt-[152mm]">
       <p class="text-sm">Rp. 16,835,000</p>
     </div>
 
     <!--  ROW 4  -->
-    <div class="z-100 absolute ml-[130mm] mt-[170mm]">
+    <div class="z-100 absolute ml-[130mm] mt-[180mm]">
       <p class="text-sm">Rp. 16,835,000</p>
     </div>
 
     <!--  ROW 5  -->
-    <div class="z-100 absolute ml-[35mm] mt-[185mm]">
+    <div class="z-100 absolute ml-[30mm] mt-[185mm]">
       <p class="text-sm">ENAM BELAS JUTA DELAPAN RATUS TIGA</p>
       <p class="text-sm">PULUH LIMA RIBU RUPIAH</p>
     </div>
