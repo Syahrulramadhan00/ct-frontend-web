@@ -48,7 +48,7 @@ definePageMeta({
     <div class="z-100 absolute ml-[20mm] mt-[80mm]">
       <p class="text-sm">mur m8 galv</p>
     </div>
-    <div class="z-100 absolute ml-[95mm] mt-[80mm]">
+    <div class="z-100 absolute ml-[90mm] mt-[80mm]">
       <p class="text-sm">rp 999</p>
     </div>
     <div class="z-100 absolute ml-[115mm] mt-[80mm]">
@@ -64,13 +64,23 @@ definePageMeta({
       <p class="text-sm">Rp. 16,835,000</p>
     </div>
 
+    <!--  DISCOUNT  -->
+    <div class="z-100 absolute ml-[105mm] mt-[159mm]">
+      <p class="text-sm">10%</p>
+    </div>
+
+    <!--  TAX  -->
+    <div class="z-100 absolute ml-[130mm] mt-[167mm]">
+      <p class="text-sm">Rp. 11.000.999</p>
+    </div>
+
     <!--  ROW 4  -->
     <div class="z-100 absolute ml-[130mm] mt-[176mm]">
       <p class="text-sm">Rp. 16,835,000</p>
     </div>
 
     <!--  ROW 5  -->
-    <div class="z-100 absolute ml-[30mm] mt-[185mm]">
+    <div class="z-100 absolute ml-[30mm] mt-[183mm]">
       <p class="text-sm">ENAM BELAS JUTA DELAPAN RATUS TIGA</p>
       <p class="text-sm">PULUH LIMA RIBU RUPIAH</p>
     </div>
