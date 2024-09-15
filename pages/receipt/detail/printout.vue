@@ -16,16 +16,16 @@ definePageMeta({
     </div>
 
     <!--  HEADER SECTION  -->
-    <div class="z-100 absolute ml-[100mm] mt-[20mm]">
+    <div class="z-100 absolute ml-[120mm] mt-[20mm]">
       <p class="text-sm">26 januari</p>
     </div>
-    <div class="z-100 absolute ml-[130mm] mt-[20mm]">
+    <div class="z-100 absolute ml-[150mm] mt-[20mm]">
       <p class="text-sm">04</p>
     </div>
-    <div class="z-100 absolute ml-[30mm] mt-[30mm]">
+    <div class="z-100 absolute ml-[40mm] mt-[35mm]">
       <p class="text-lg">177/X/SAM/SBY/22</p>
     </div>
-    <div class="z-100 absolute ml-[90mm] mt-[35mm]">
+    <div class="z-100 absolute ml-[120mm] mt-[25mm]">
       <p class="text-sm">PT Sinergi Makmur Sentosa</p>
       <p class="text-sm">Raya Gding Pantai 31 sby</p>
     </div>
@@ -34,43 +34,43 @@ definePageMeta({
     <div class="z-100 absolute ml-[10mm] mt-[55mm]">
       <p class="text-sm">Imam Subeqi</p>
     </div>
-    <div class="z-100 absolute ml-[40mm] mt-[55mm]">
+    <div class="z-100 absolute ml-[50mm] mt-[55mm]">
       <p class="text-sm">SAM/22/04/SAM/A</p>
     </div>
-    <div class="z-100 absolute ml-[90mm] mt-[55mm]">
+    <div class="z-100 absolute ml-[100mm] mt-[55mm]">
       <p class="text-sm">30 Hari</p>
     </div>
-    <div class="z-100 absolute ml-[110mm] mt-[55mm]">
+    <div class="z-100 absolute ml-[130mm] mt-[55mm]">
       <p class="text-sm">28 Nov 22</p>
     </div>
 
     <!--  ROW 2  -->
-    <div class="z-100 absolute ml-[10mm] mt-[80mm]">
+    <div class="z-100 absolute ml-[20mm] mt-[80mm]">
       <p class="text-sm">mur m8 galv</p>
     </div>
-    <div class="z-100 absolute ml-[83mm] mt-[80mm]">
+    <div class="z-100 absolute ml-[95mm] mt-[80mm]">
       <p class="text-sm">rp 999</p>
     </div>
-    <div class="z-100 absolute ml-[100mm] mt-[80mm]">
+    <div class="z-100 absolute ml-[115mm] mt-[80mm]">
       <p class="text-sm">500</p>
     </div>
-    <div class="z-100 absolute ml-[110mm] mt-[80mm]">
+    <div class="z-100 absolute ml-[130mm] mt-[80mm]">
       <p class="text-sm">Rp. 999.999.999</p>
     </div>
 
 
     <!--  ROW 3  -->
-    <div class="z-100 absolute ml-[110mm] mt-[160mm]">
+    <div class="z-100 absolute ml-[130mm] mt-[150mm]">
       <p class="text-sm">Rp. 16,835,000</p>
     </div>
 
     <!--  ROW 4  -->
-    <div class="z-100 absolute ml-[110mm] mt-[180mm]">
+    <div class="z-100 absolute ml-[130mm] mt-[170mm]">
       <p class="text-sm">Rp. 16,835,000</p>
     </div>
 
     <!--  ROW 5  -->
-    <div class="z-100 absolute ml-[25mm] mt-[185mm]">
+    <div class="z-100 absolute ml-[35mm] mt-[185mm]">
       <p class="text-sm">ENAM BELAS JUTA DELAPAN RATUS TIGA</p>
       <p class="text-sm">PULUH LIMA RIBU RUPIAH</p>
     </div>
