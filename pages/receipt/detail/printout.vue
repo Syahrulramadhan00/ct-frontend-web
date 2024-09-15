@@ -31,7 +31,7 @@ definePageMeta({
     </div>
 
     <!--  ROW 1  -->
-    <div class="z-100 absolute ml-[10mm] mt-[55mm]">
+    <div class="z-100 absolute ml-[15mm] mt-[55mm]">
       <p class="text-sm">Imam Subeqi</p>
     </div>
     <div class="z-100 absolute ml-[50mm] mt-[55mm]">
