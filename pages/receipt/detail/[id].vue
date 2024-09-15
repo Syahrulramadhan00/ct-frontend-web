@@ -25,7 +25,30 @@
           <p class="text-white">Simpan akhir</p>
         </div>
       </div>
+      <div v-else-if="receipt?.Status === 2" class="ml-2">
+        <div
+            class="main-container bg-red-500 p-0 py-1 mb-2 justify-center rounded-2xl"
+        >
+          <p class="text-white flex-1 text-center">Proses</p>
+        </div>
+        <div
+            @click="confirmPaying"
+            class="main-container bg-purple-400 p-0 py-1 px-3 flex justify-evenly items-center hover:cursor-pointer"
+        >
+          <i class="pi pi-dollar text-white mr-1"> </i>
+          <p class="text-white">Bayar</p>
+        </div>
+      </div>
+      <div v-else-if="receipt?.Status === 3" class="ml-2">
+        <div
+            class="main-container bg-green-500 p-0 py-1 mb-2 justify-center rounded-2xl"
+        >
+          <p class="text-white flex-1 text-center mx-8">Selesai</p>
+        </div>
+      </div>
     </div>
+
+
     <div class="main-container mt-5">
       <DataTable
           :value="invoice"
@@ -156,8 +179,14 @@ async function lockClick(){
   });
 }
 
+async function payClick(){
+  await payReceipt(route.params.id, async() => {
+    receipt.value = await getReceipt(route.params.id);
+  });
+}
+
 const route = useRoute();
-const {pending, getReceipt, getInvoices, addInvoice, deleteInvoice, lockReceipt } = ReceiptApi();
+const {pending, getReceipt, getInvoices, addInvoice, deleteInvoice, lockReceipt, payReceipt } = ReceiptApi();
 const receipt = ref();
 const invoice = ref();
 const invoicesMenu = ref([]);
@@ -184,12 +213,31 @@ const confirmDelete = (id) => {
     rejectClass: 'bg-white border-none hover:border-solid hover:border-green-500 hover:bg-white',
     acceptClass: 'bg-red-400 border-none focus:ring-0 hover:border-solid hover:border-green-500 hover:bg-red-400 hover:border-[3px]',
     accept: () => {
-
       eraseInvoice(id);
     },
     reject: () => {
     }
   });
+  }
+};
+
+const confirmPaying = () => {
+  const totalAmount = invoice.value.reduce((acc, curr) => acc + curr.jumlah, 0);
+  if (receipt?.value.Status === 2){
+    confirm.require({
+      message: `Apakah ingin menyelesaikan tanda terima ini? (sebesar ${totalAmount})`,
+      header: 'Bayar tanda terima',
+      icon: 'pi pi-info-circle mr-2',
+      rejectLabel: 'Cancel',
+      acceptLabel: 'Bayar',
+      rejectClass: 'bg-white border-none hover:border-solid hover:border-green-500 hover:bg-white',
+      acceptClass: 'bg-red-400 border-none focus:ring-0 hover:border-solid hover:border-green-500 hover:bg-red-400 hover:border-[3px]',
+      accept: () => {
+        payClick(route.params.id);
+      },
+      reject: () => {
+      }
+    });
   }
 };
 </script>

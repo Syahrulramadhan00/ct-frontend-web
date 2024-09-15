@@ -67,7 +67,7 @@ export const ReceiptApi = () => {
                     id: item.ID,
                     no: index + 1,
                     kode: item.Invoice.InvoiceCode,
-                    jumlah: "100.000.000",
+                    jumlah: item.Invoice.TotalPrice,
                 };
             });
         } else {
@@ -111,5 +111,17 @@ export const ReceiptApi = () => {
         fallback();
     }
 
-    return {pending, getReceipts, addReceipt, getReceipt, getInvoices, addInvoice, deleteInvoice, lockReceipt};
+    async function payReceipt(id, fallback){
+        res.value = [];
+        url.value = `pay-receipt`;
+        method.value = "POST";
+        body.value = {
+            id: +id
+        };
+
+        await fetchApi();
+        fallback();
+    }
+
+    return {pending, getReceipts, addReceipt, getReceipt, getInvoices, addInvoice, deleteInvoice, lockReceipt, payReceipt};
 }
