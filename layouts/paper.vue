@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-auto bg-white border-2 h-[206mm] w-[148mm] p-0">
+  <div class="mx-auto bg-white border-2 h-[209mm] w-[150mm] p-0">
     <slot />
   </div>
 </template>
@@ -9,7 +9,7 @@
 
 <style scoped>
 @page {
-  size: A4;
+  size: A5;
   margin: 0;
 }
 
