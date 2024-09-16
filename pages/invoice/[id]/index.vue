@@ -42,6 +42,13 @@
           >
             <p class="text-white">Lihat surat jalan</p>
           </div>
+          <div
+              @click="toPrintout()"
+              class="main-container mt-2 bg-transparent border-black border-2 p-0 py-1 px-3 flex justify-evenly items-center hover:cursor-pointer"
+          >
+            <i class="pi pi-print text-black mr-1"> </i>
+            <p class="text-black">print invoice</p>
+          </div>
         </div>
       </div>
     </div>
@@ -422,14 +429,12 @@
 </template>
 
 <script setup>
-import {DummyService} from "@/service/DummyService";
 import {Util} from "~/composables/Util.js";
 import {PoFileApi} from "~/composables/invoices/PoFileApi.js";
 import {InvoiceApi} from "~/composables/invoices/InvoiceApi.js";
 import {FakturFileApi} from "~/composables/invoices/FakturFileApi.js";
 
 onMounted(() => {
-  product.value = DummyService.getInvoiceProduct();
   init();
 });
 
@@ -674,6 +679,10 @@ async function lock(){
     invoice.value = await getInvoice(route.params.id);
   })
   }
+}
+
+async function toPrintout() {
+  await router.push(`/invoice/${route.params.id}/printout`);
 }
 
 </script>

@@ -62,7 +62,7 @@
         </Column>
         <Column field="status" header="">
           <template #body="{ data }">
-            <NuxtLink :to="'/invoice/detail/' + data.id"
+            <NuxtLink :to="'/invoice/' + data.id"
               ><i class="pi pi-chevron-right"></i
             ></NuxtLink>
           </template>

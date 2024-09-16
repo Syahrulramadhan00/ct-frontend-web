@@ -27,5 +27,44 @@ export const Util = () => {
     return new File([file], newFileName, { type: file.type });
   }
 
-  return { formatDate, formatDateYMD, adjustFile };
+  function formatDateDM(dateInput) {
+    if (dateInput === ""){
+      return "";
+    }
+
+    const date = new Date(dateInput);
+    const options = { day: '2-digit', month: 'long' };
+    return date.toLocaleDateString('id-ID', options);
+  }
+
+  function formatY2Digit(dateInput) {
+    if (dateInput === ""){
+      return "";
+    }
+
+    const date = new Date(dateInput);
+    return date.getFullYear().toString().slice(-2);
+  }
+
+  function getDeadline(dateInput, paymentTerm) {
+    if (dateInput === "" || paymentTerm === 0){
+      return "";
+    }
+
+    const date = new Date(dateInput);
+
+    date.setDate(date.getDate() + paymentTerm);
+
+    const options = { day: '2-digit', month: 'short', year: '2-digit' };
+    return date.toLocaleDateString('id-ID', options).replace('.', '');
+  }
+
+  function formatNumber(num) {
+    if(num === null || num === undefined){
+      return "";
+    }
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  return { formatDate, formatDateYMD, adjustFile, formatDateDM, formatY2Digit, getDeadline, formatNumber };
 };
