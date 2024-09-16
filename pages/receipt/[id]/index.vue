@@ -27,16 +27,18 @@
       </div>
       <div v-else-if="receipt?.Status === 2" class="ml-2">
         <div
-            class="main-container bg-red-500 p-0 py-1 mb-2 justify-center rounded-2xl"
-        >
-          <p class="text-white flex-1 text-center">Proses</p>
-        </div>
-        <div
             @click="confirmPaying"
             class="main-container bg-purple-400 p-0 py-1 px-3 flex justify-evenly items-center hover:cursor-pointer"
         >
           <i class="pi pi-dollar text-white mr-1"> </i>
           <p class="text-white">Bayar</p>
+        </div>
+        <div
+            @click="toPrintout()"
+            class="main-container mt-2 bg-transparent border-black border-2 p-0 py-1 px-3 flex justify-evenly items-center hover:cursor-pointer"
+        >
+          <i class="pi pi-print text-black mr-1"> </i>
+          <p class="text-black">print receipt</p>
         </div>
       </div>
       <div v-else-if="receipt?.Status === 3" class="ml-2">
@@ -44,6 +46,13 @@
             class="main-container bg-green-500 p-0 py-1 mb-2 justify-center rounded-2xl"
         >
           <p class="text-white flex-1 text-center mx-8">Selesai</p>
+        </div>
+        <div
+            @click="toPrintout()"
+            class="main-container mt-2 bg-transparent border-black border-2 p-0 py-1 px-3 flex justify-evenly items-center hover:cursor-pointer"
+        >
+          <i class="pi pi-print text-black mr-1"> </i>
+          <p class="text-black">print receipt</p>
         </div>
       </div>
     </div>
@@ -186,6 +195,7 @@ async function payClick(){
 }
 
 const route = useRoute();
+const router = useRouter();
 const {pending, getReceipt, getInvoices, addInvoice, deleteInvoice, lockReceipt, payReceipt } = ReceiptApi();
 const receipt = ref();
 const invoice = ref();
@@ -240,4 +250,8 @@ const confirmPaying = () => {
     });
   }
 };
+
+async function toPrintout() {
+  await router.push(`/receipt/${route.params.id}/printout`);
+}
 </script>

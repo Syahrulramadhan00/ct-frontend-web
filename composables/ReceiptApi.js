@@ -68,6 +68,7 @@ export const ReceiptApi = () => {
                     no: index + 1,
                     kode: item.Invoice.InvoiceCode,
                     jumlah: item.Invoice.TotalPrice,
+                    tanggal : item.Invoice.Date
                 };
             });
         } else {
