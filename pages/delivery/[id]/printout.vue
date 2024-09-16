@@ -37,9 +37,9 @@ function printDelivery() {
     <div class="z-100 absolute ml-[155mm] mt-[17mm]">
       <p class="text-sm">24</p>
     </div>
-    <div class="z-100 absolute ml-[55mm] mt-[38mm]">
-      <p class="text-lg">177/x/SAM/SBY/22/A</p>
-      <p class="text-lg">177/x/SAM/SBY/22</p>
+    <div class="z-100 absolute ml-[50mm] mt-[35mm]">
+      <p>177/x/SAM/SBY/22/A</p>
+      <p>177/x/SAM/SBY/22</p>
     </div>
     <div class="z-100 absolute ml-[120mm] mt-[28mm]">
       <p class="text-xs">Pt sinergi Makmur sentosa</p>
@@ -47,11 +47,11 @@ function printDelivery() {
     </div>
 
     <!--  PRODUCT SECTION  -->
-    <div class="z-100 absolute ml-[20mm] mt-[65mm]">
+    <div class="z-100 absolute ml-[27mm] mt-[65mm]">
 <!--      <div v-for="(sale) in sales">-->
         <div class="flex">
           <p class="text-sm w-[25mm]">9999</p>
-          <p class="text-sm w-[40mm]">PCS</p>
+          <p class="text-sm w-[33mm]">PCS</p>
           <p class="text-sm w-[60mm]">Mur M8 Galv.</p>
         </div>
 <!--      </div>-->
