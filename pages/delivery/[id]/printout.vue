@@ -1,6 +1,32 @@
 <script setup>
+import {onMounted} from "vue";
+import {Util} from "~/composables/Util.js";
+
 definePageMeta({
   layout: "paper",
+});
+
+const delivery = ref();
+const products = ref([]);
+const route = useRoute();
+
+async function init() {
+  delivery.value = await getDelivery(route.params.id);
+  products.value = await getDeliveryProducts(route.params.id);
+}
+
+const {
+  pending,
+  getDelivery,
+} = DeliveryApi();
+const {formatDateDM, formatY2Digit, formatNumber} = Util();
+const {
+  getDeliveryProducts,
+} = DeliveryProductApi();
+
+
+onMounted(() => {
+  init();
 });
 
 function printDelivery() {
@@ -32,29 +58,29 @@ function printDelivery() {
 
     <!--  HEADER SECTION  -->
     <div class="z-100 absolute ml-[132mm] mt-[17mm]">
-      <p class="text-sm">26 januari</p>
+      <p class="text-sm">{{formatDateDM(delivery?.CreatedAt ?? "")}}</p>
     </div>
     <div class="z-100 absolute ml-[155mm] mt-[17mm]">
-      <p class="text-sm">24</p>
+      <p class="text-sm">{{formatY2Digit(delivery?.CreatedAt ?? "")}}</p>
     </div>
     <div class="z-100 absolute ml-[50mm] mt-[35mm]">
-      <p>177/x/SAM/SBY/22/A</p>
-      <p>177/x/SAM/SBY/22</p>
+      <p>{{delivery?.OrderCode ?? ""}}</p>
+      <p>{{delivery?.Invoice?.PoCode ?? ""}}</p>
     </div>
-    <div class="z-100 absolute ml-[120mm] mt-[28mm]">
-      <p class="text-xs">Pt sinergi Makmur sentosa</p>
-      <p class="text-xs">proyek : ikn</p>
+    <div class="z-100 absolute ml-[120mm] mt-[30mm]">
+      <p class="text-xs">{{delivery?.Invoice?.Client?.name ?? ""}}</p>
+      <p class="text-xs">{{delivery?.Invoice?.ProjectName ?? ""}}</p>
     </div>
 
     <!--  PRODUCT SECTION  -->
     <div class="z-100 absolute ml-[27mm] mt-[65mm]">
-<!--      <div v-for="(sale) in sales">-->
+      <div v-for="(product) in products">
         <div class="flex">
-          <p class="text-sm w-[25mm]">9999</p>
+          <p class="text-sm w-[25mm]">{{formatNumber(product?.Quantity ?? "")}}</p>
           <p class="text-sm w-[33mm]">PCS</p>
-          <p class="text-sm w-[60mm]">Mur M8 Galv.</p>
+          <p class="text-sm w-[60mm]">{{product.Name ?? ""}}</p>
         </div>
-<!--      </div>-->
+      </div>
     </div>
   </div>
 </template>

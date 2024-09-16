@@ -108,6 +108,11 @@ function printInvoice() {
       </div>
     </div>
 
+    <!--  NOTES  -->
+    <div class="z-100 absolute ml-[20mm] mt-[140mm]">
+      <p class="text-xs">{{ invoice ? invoice.Platform : "" }} {{ invoice ? invoice.PlatformNumber : "" }}</p>
+      <p class="text-xs">a/n {{ invoice ? invoice.PlatformDescription : "" }}</p>
+    </div>
 
     <!--  ROW 3  -->
     <div class="z-100 absolute ml-[130mm] mt-[152mm]">
@@ -131,7 +136,7 @@ function printInvoice() {
 
     <!--  ROW 5  -->
     <div v-if="totalPrice !== null" class="z-100 absolute ml-[30mm] mt-[183mm] w-[100mm]">
-      <p class="text-sm">{{ toTerbilang(totalPrice?.toString()) }}</p>
+      <p class="text-sm">{{ toTerbilang(totalPrice?.toString())}} RUPIAH</p>
     </div>
   </div>
 </template>

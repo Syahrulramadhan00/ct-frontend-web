@@ -33,7 +33,7 @@ export const Util = () => {
     }
 
     const date = new Date(dateInput);
-    const options = { day: '2-digit', month: 'long' };
+    const options = { day: '2-digit', month: 'short' };
     return date.toLocaleDateString('id-ID', options);
   }
 

@@ -41,6 +41,18 @@
           </div>
         </div>
       </div>
+
+      <div v-else>
+        <div class="ml-2">
+          <div
+              @click="toPrintout()"
+              class="main-container mt-2 bg-transparent border-black border-2 p-0 py-1 px-3 flex justify-evenly items-center hover:cursor-pointer"
+          >
+            <i class="pi pi-print text-black mr-1"> </i>
+            <p class="text-black">print surat jalan</p>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- PRODUCT SECTION -->
@@ -273,6 +285,7 @@ import {onMounted} from "vue";
 import {UserApi} from "~/composables/UserApi.js";
 
 const route = useRoute();
+const router = useRouter();
 const delivery = ref(null);
 const isDeliveryValid = ref(true);
 const products = ref([]);
@@ -399,6 +412,9 @@ const confirmDelete = (data) => {
   });
 };
 
+async function toPrintout() {
+  await router.push(`/delivery/${route.params.id}/printout`);
+}
 </script>
 
 <style scoped>
