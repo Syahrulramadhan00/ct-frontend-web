@@ -76,7 +76,7 @@
         </Column>
         <Column field="status" header="">
           <template #body="{data}">
-            <nuxt-link :to="'/receipt/detail/' + data.id">
+            <nuxt-link :to="'/receipt/' + data.id">
               <i class="pi pi-chevron-right"></i>
             </nuxt-link>
             <!-- <p>
