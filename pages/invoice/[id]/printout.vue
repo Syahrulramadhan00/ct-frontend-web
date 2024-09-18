@@ -28,7 +28,7 @@ async function init() {
   sales.value = await getAllSales(route.params.id);
 
   if (invoice.value.IsTaxable){
-    tax.value = invoice.value.TotalPrice / 100 * 11;
+    tax.value = Math.round(invoice.value.TotalPrice / 100 * 11);
   } else {
     tax.value = 0;
   }
