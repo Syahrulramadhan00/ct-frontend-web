@@ -27,8 +27,13 @@ async function init() {
   invoice.value = await getInvoice(route.params.id);
   sales.value = await getAllSales(route.params.id);
 
-  tax.value = invoice.value.TotalPrice / 100 * invoice.value.Tax;
+  if (invoice.value.IsTaxable){
+    tax.value = invoice.value.TotalPrice / 100 * 11;
+  } else {
+    tax.value = 0;
+  }
   totalPrice.value = invoice.value.TotalPrice + tax.value;
+  console.log(tax.value);
   pending.value = false;
 }
 

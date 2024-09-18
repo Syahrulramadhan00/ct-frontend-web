@@ -76,9 +76,9 @@ function printDelivery() {
     <div class="z-100 absolute ml-[27mm] mt-[65mm]">
       <div v-for="(product) in products">
         <div class="flex">
-          <p class="text-sm w-[25mm]">{{formatNumber(product?.Quantity ?? "")}}</p>
-          <p class="text-sm w-[33mm]">PCS</p>
-          <p class="text-sm w-[60mm]">{{product.Name ?? ""}}</p>
+          <p class="w-[25mm]">{{formatNumber(product?.Quantity ?? "")}}</p>
+          <p class="w-[33mm]">PCS</p>
+          <p class="w-[60mm]">{{product.Name ?? ""}}</p>
         </div>
       </div>
     </div>
