@@ -3,7 +3,7 @@ import {onMounted, ref} from "vue";
 import {Util} from "~/composables/Util.js";
 
 definePageMeta({
-  layout: "paper",
+  layout: "a4",
 });
 
 const route = useRoute();
@@ -58,7 +58,7 @@ function printReceipt() {
     />
   </div>
 
-  <div v-else class="z-0 absolute">
+  <div v-else class="z-0 absolute" id="pages">
     <div class="z-100 absolute" id="print-button">
       <div
           @click="printReceipt"
@@ -155,6 +155,13 @@ th, td {
 @media print {
   #print-button {
     display: none;
+  }
+
+
+  #pages {
+    transform: scale(1.41); /* A4/A5 = 297mm/210mm ≈ 1.41 */
+    transform-origin: top left;
+    margin: 0;
   }
 }
 </style>
