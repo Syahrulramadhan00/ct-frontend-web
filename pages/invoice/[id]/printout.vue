@@ -9,12 +9,12 @@ definePageMeta({
 
 const invoice = ref([]);
 const route = useRoute();
-const tax = ref();
 const totalPrice = ref();
 const {formatDateDM, formatY2Digit, getDeadline, formatNumber} = Util();
 const sales = ref([]);
 const {pending: salePending, getAllSales} = SalesApi();
 const pending = ref(true);
+const actualPrice = ref();
 
 
 const {
@@ -27,13 +27,13 @@ async function init() {
   invoice.value = await getInvoice(route.params.id);
   sales.value = await getAllSales(route.params.id);
 
+  invoice.value.TotalPrice = Math.round(invoice.value?.TotalPrice);
   if (invoice.value.IsTaxable){
-    tax.value = Math.round(invoice.value.TotalPrice / 100 * 11);
+    actualPrice.value = Math.round(invoice.value.TotalPrice / 1.11);
   } else {
-    tax.value = 0;
+    actualPrice.value = invoice.value.TotalPrice;
   }
-  totalPrice.value = invoice.value.TotalPrice + tax.value;
-  console.log(tax.value);
+
   pending.value = false;
 }
 
@@ -121,7 +121,7 @@ function printInvoice() {
 
     <!--  ROW 3  -->
     <div class="z-100 absolute ml-[130mm] mt-[152mm]">
-      <p class="text-sm">Rp. {{ formatNumber(invoice ? invoice.TotalPrice : "") }}</p>
+      <p class="text-sm">Rp. {{ formatNumber(actualPrice) }}</p>
     </div>
 
     <!--  DISCOUNT  -->
@@ -130,18 +130,18 @@ function printInvoice() {
     </div>
 
     <!--  TAX  -->
-    <div v-if="tax !== 0 && tax !== null" class="z-100 absolute ml-[130mm] mt-[167mm]">
-      <p class="text-sm">Rp. {{ formatNumber(tax) }}</p>
+    <div v-if="(invoice?.TotalPrice - actualPrice) !== 0" class="z-100 absolute ml-[130mm] mt-[167mm]">
+      <p class="text-sm">Rp. {{ formatNumber(invoice?.TotalPrice - actualPrice) }}</p>
     </div>
 
     <!--  ROW 4  -->
     <div class="z-100 absolute ml-[130mm] mt-[176mm]">
-      <p class="text-sm">Rp. {{ formatNumber(totalPrice) }}</p>
+      <p class="text-sm">Rp. {{ formatNumber(invoice ? invoice.TotalPrice : "") }}</p>
     </div>
 
     <!--  ROW 5  -->
     <div v-if="totalPrice !== null" class="z-100 absolute ml-[30mm] mt-[183mm] w-[100mm]">
-      <p class="text-sm">{{ toTerbilang(totalPrice?.toString())}} RUPIAH</p>
+      <p class="text-sm">{{ toTerbilang(invoice?.TotalPrice?.toString())}} RUPIAH</p>
     </div>
   </div>
 </template>
