@@ -82,9 +82,10 @@ function printInvoice() {
     <div class="z-100 absolute ml-[38mm] mt-[33mm]">
       <p class="text-lg">{{ invoice ? invoice.InvoiceCode : "" }}</p>
     </div>
-    <div class="z-100 absolute ml-[120mm] mt-[33mm]">
-      <p class="text-xs">{{ invoice ? invoice.Client?.name : "" }}</p>
-      <p class="text-xs">{{ invoice ? invoice.ProjectName : "" }}</p>
+    <div class="z-100 absolute ml-[117mm] mt-[32mm]">
+      <p class="font-bold">{{ invoice ? invoice.Client?.name : "" }}</p>
+      <p class="text-sm">{{ invoice ? invoice.Client?.place : "" }}</p>
+      <p class="text-sm">{{ invoice ? "proy " + invoice.ProjectName : "" }}</p>
     </div>
 
     <!--  ROW 1  -->
