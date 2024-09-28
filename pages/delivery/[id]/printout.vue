@@ -67,9 +67,10 @@ function printDelivery() {
       <p>{{delivery?.OrderCode ?? ""}}</p>
       <p>{{delivery?.Invoice?.PoCode ?? ""}}</p>
     </div>
-    <div class="z-100 absolute ml-[120mm] mt-[30mm]">
-      <p class="text-xs">{{delivery?.Invoice?.Client?.name ?? ""}}</p>
-      <p class="text-xs">{{delivery?.Invoice?.ProjectName ?? ""}}</p>
+    <div class="z-100 absolute ml-[112mm] mt-[32mm]">
+      <p class="font-bold">{{delivery?.Invoice?.Client?.name ?? ""}}</p>
+      <p class="text-sm">{{ delivery?.Invoice?.Client?.place ?? "" }}</p>
+      <p class="text-sm">{{"proy " + delivery?.Invoice?.ProjectName ?? ""}}</p>
     </div>
 
     <!--  PRODUCT SECTION  -->
