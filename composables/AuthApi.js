@@ -18,6 +18,8 @@ export const AuthApi = () => {
 
     await fetchApi();
 
+    console.log(res.value);
+
     if (res.value.status === 200) {
       storeOtp.setEmailOtp(email.value);
       router.push("/auth/otp");

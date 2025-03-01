@@ -13,12 +13,20 @@
           <label for="email">Email</label>
         </FloatLabel>
         <div class="">
-          <FloatLabel class="mt-8">
+          <FloatLabel class="mt-8 relative">
             <InputText
+              :type="showPassword ? 'text' : 'password'"
               id="password"
               v-model="password"
               class="md:w-64 lg:w-[27rem]"
             />
+            <button
+            type="button"
+            @click="toggleShow"
+            class="absolute inset-y-0 right-2 flex items-center"
+            >
+              <i class="pi" :class="showPassword ? 'pi-eye-slash' : 'pi-eye'"></i>
+            </button>      
             <label for="password">Password</label>
           </FloatLabel>
           <p class="mt-1 font-semibold text-blue-600 text-sm">Lupa password?</p>
@@ -58,7 +66,12 @@ definePageMeta({
 
 const email = ref(null);
 const password = ref(null);
+const showPassword = ref(false);
 
 const { login, pending } = AuthApi();
+
+const toggleShow = () => {
+  showPassword.value = !showPassword.value;
+};
 </script>
 

@@ -20,12 +20,20 @@
           <InputText id="email" v-model="email" class="md:w-64 lg:w-[27rem]" />
           <label for="email">Email</label>
         </FloatLabel>
-        <FloatLabel class="mt-8">
+        <FloatLabel class="mt-8 relative">
           <InputText
+            :type="showPassword ? 'text' : 'password'"
             id="password"
             v-model="password"
             class="md:w-64 lg:w-[27rem]"
-          />
+          /> 
+        <button
+        type="button"
+        @click="toggleShow"
+        class="absolute inset-y-0 right-2 flex items-center"
+        >
+          <i class="pi" :class="showPassword ? 'pi-eye-slash' : 'pi-eye'"></i>
+        </button>      
           <label for="password">Password</label>
         </FloatLabel>
         <div class="flex flex-col items-center">
@@ -64,7 +72,12 @@ import ProgressSpinner from "primevue/progressspinner";
 const email = ref(null);
 const password = ref(null);
 const username = ref(null);
+const showPassword = ref(false);
 const { register, pending } = AuthApi();
+
+const toggleShow = () => {
+  showPassword.value = !showPassword.value;
+};
 </script>
 
   
