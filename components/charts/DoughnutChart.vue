@@ -21,6 +21,7 @@
     const textColor = documentStyle.getPropertyValue('--p-text-color');
   
     return {
+    responsive: true,
       plugins: {
         legend: {
           labels: {
