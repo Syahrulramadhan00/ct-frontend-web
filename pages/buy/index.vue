@@ -82,100 +82,117 @@
     </div>
 
 
-        <Dialog
-      v-model:visible="buyModal"
-      modal
-      :header=" isUpdate ? 'Ubah pembelian' : 'Tambah pembelian' "
-      :style="{ width: '25rem' }"
+<Dialog
+  v-model:visible="buyModal"
+  modal
+  :header=" isUpdate ? 'Ubah pembelian' : 'Tambah pembelian' "
+  :style="{ width: '25rem' }"
+>
+  <div class="flex flex-col">
+    <p v-if="!isUpdate" class="mb-3">Pilih barang :</p>
+    <div v-if="!isUpdate" class="w-80 ml-4">
+      <Dropdown
+        v-model="selectedProduct"
+        :options="products"
+        optionLabel="barang"         placeholder="pilihan barang"
+        class="flex justify-between w-full items-center px-2"
+        panelClass="bg-white rounded-lg px-2 hover:cursor-pointer drop-shadow-lg"
+        :virtualScrollerOptions="{ itemSize: 38 }"
+      />
+    </div>
+        <p v-if="!isUpdate" class="mt-4 mb-3">Pilih supplier :</p>     <div v-if="!isUpdate" class="w-80 ml-4">
+      <Dropdown
+        v-model="selectedSupplier"
+        :options="suppliers"
+        optionLabel="name"         placeholder="pilih supplier"
+        class="flex justify-between w-full items-center px-2"
+        panelClass="bg-white rounded-lg px-2 hover:cursor-pointer drop-shadow-lg"
+        :virtualScrollerOptions="{ itemSize: 38 }"
+      />
+    </div>
+        <FloatLabel class="mt-8">
+      <InputText id="count" v-model="productCount" class="w-[22rem]" />
+      <label for="count">Jumlah barang</label>
+    </FloatLabel>
+    <FloatLabel class="mt-8">
+      <InputText id="price" v-model="productPrice" class="w-[22rem]" />
+      <label for="price">Harga satuan</label>
+    </FloatLabel>
+
+    <div class="flex-1 mt-4">
+    <p class="mb-2">Apakah sudah terbayar?</p>
+    <div class="flex flex-wrap gap-3">
+      <div class="flex align-items-center">
+        <RadioButton
+          v-model="paid"
+          inputId="ya"
+          name="paid"
+          value="ya"
+        />
+        <label for="paid1" class="ml-2">Ya</label>
+      </div>
+      <div class="flex align-items-center">
+        <RadioButton
+          v-model="paid"
+          inputId="tidak"
+          name="paid"
+          value="tidak"
+        />
+        <label for="paid2" class="ml-2">Belum</label>
+      </div>
+    </div>
+  </div>
+
+    <div
+      @click="
+      addPurchase({
+        productId: selectedProduct ? selectedProduct.id : null,
+        supplierId: selectedSupplier ? selectedSupplier.id : null, /* MODIFIED: Ensure selectedSupplier exists before accessing id */
+        count: productCount,
+        price: productPrice,
+        isPaid: paid === 'ya'
+      }, async () => {
+        buyModal = false;
+        resetForm();
+        pembelian.value = await getAllPurchase();
+      })
+      "
+      class="main-container bg-purple-400 p-0 flex items-center justify-center h-10 shadow-md mt-5 hover:cursor-pointer"
     >
-      <div class="flex flex-col">
-        <p v-if="!isUpdate" class="mb-3">Pilih barang :</p>
-        <div v-if="!isUpdate" class="w-80 ml-4">
-          <Dropdown
-            v-model="selectedProduct"
-            :options="products"
-            optionLabel="barang"
-            placeholder="pilihan barang"
-            class="flex justify-between w-full items-center px-2"
-            panelClass="bg-white rounded-lg px-2 hover:cursor-pointer drop-shadow-lg"
-            :virtualScrollerOptions="{ itemSize: 38 }"
-          />
-        </div>
-        <FloatLabel class="mt-8">
-          <InputText id="count" v-model="productCount" class="w-[22rem]" />
-          <label for="count">Jumlah barang</label>
-        </FloatLabel>
-        <FloatLabel class="mt-8">
-          <InputText id="price" v-model="productPrice" class="w-[22rem]" />
-          <label for="price">Harga satuan</label>
-        </FloatLabel>
-
-        <div class="flex-1 mt-4">
-        <p class="mb-2">Apakah sudah terbayar?</p>
-        <div class="flex flex-wrap gap-3">
-          <div class="flex align-items-center">
-            <RadioButton
-              v-model="paid"
-              inputId="ya"
-              name="paid"
-              value="ya"
-            />
-            <label for="paid1" class="ml-2">Ya</label>
-          </div>
-          <div class="flex align-items-center">
-            <RadioButton
-              v-model="paid"
-              inputId="tidak"
-              name="paid"
-              value="tidak"
-            />
-            <label for="paid2" class="ml-2">Belum</label>
-          </div>
-        </div>
+      <div v-if="purchasePending" class="pt-1">
+        <ProgressSpinner
+          style="width: 20px; height: 20px"
+          strokeWidth="6"
+        />
       </div>
-
-        <div
-          @click="
-          addPurchase({
-            productId: selectedProduct.id,
-            count: productCount,
-            price: productPrice,
-            isPaid: paid === 'ya'
-          }, async () => {
-            buyModal = false;
-            resetForm();
-            pembelian = await getAllPurchase();
-          })
-          "
-          class="main-container bg-purple-400 p-0 flex items-center justify-center h-10 shadow-md mt-5 hover:cursor-pointer"
-        >
-          <div v-if="purchasePending" class="pt-1">
-            <ProgressSpinner
-              style="width: 20px; height: 20px"
-              strokeWidth="6"
-            />
-          </div>
-          <p v-else class="font-semibold mx-3 text-white">{{ isUpdate ? "Ubah" : "Tambah"}}</p>
-        </div>
-      </div>
-    </Dialog>
+      <p v-else class="font-semibold mx-3 text-white">{{ isUpdate ? "Ubah" : "Tambah"}}</p>
+    </div>
+  </div>
+</Dialog>
   </div>
 </template>
 
 <script setup>
 import { FilterMatchMode } from "primevue/api";
 import { PurchaseApi } from "~/composables/PurchaseApi";
+import { ProductApi } from "~/composables/ProductApi"; // Assuming ProductApi is in a separate file
+import { SupplierApi } from "~/composables/SupplierApi"; // Import SupplierApi
 
 onMounted(() => {
   init();
 });
 
+
+
 async function init(){
   products.value = await getAllProduct();
+  suppliers.value = await getAllSuppliers(); // MODIFIED: Call getAllSuppliers
   pembelian.value = await getAllPurchase();
 }
 
 const { pending: productPending, getAllProduct } = ProductApi();
+// MODIFIED: Destructure getAllSuppliers from SupplierApi correctly
+const { pending: supplierPending, getAllSuppliers } = SupplierApi();
 const { pending: purchasePending, addPurchase, getAllPurchase, deletePurchase, payDebt } = PurchaseApi();
 
 
@@ -193,11 +210,15 @@ const buyModal = ref(false);
 const isUpdate = ref(false);
 const selectedProduct = ref(null);
 const products = ref([]);
+const suppliers = ref([]); // Already here, good.
+const selectedSupplier = ref(null); // MODIFIED: Add ref for selected supplier
 const productCount = ref(null);
 const productPrice = ref(null);
 const paid = ref(null);
+
 function resetForm() {
   selectedProduct.value = null;
+  selectedSupplier.value = null; // MODIFIED: Reset selected supplier
   productCount.value = null;
   productPrice.value = null;
   paid.value = null;

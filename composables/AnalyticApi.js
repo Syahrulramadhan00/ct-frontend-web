@@ -3,11 +3,11 @@ import FetchUtils from "~/composables/FetchUtils";
 export const AnalyticApi = () => {
   const { fetchApi, res, url, queryParams, pending, method } = FetchUtils();
 
-  async function getRevenueStream() {
+  async function getRevenueStream(startDateValue, endDateValue) {
     res.value = [];
     url.value = "get-revenue-stream";
     method.value = "GET";
-    queryParams.value = { startDate: "2025-01", endDate: "2025-06" };
+    queryParams.value = { startDate: startDateValue, endDate: endDateValue };
 
     await fetchApi();
     if (res.value.status === 200) {
@@ -48,10 +48,10 @@ export const AnalyticApi = () => {
     }
   }
   
-  async function getExpenses() {
+  async function getExpenses(startDateValue, endDateValue) {
     res.value = [];
     url.value = "get-expenses";
-    queryParams.value = { startDate: "2025-01", endDate: "2025-06" };
+    queryParams.value = { startDate: startDateValue, endDate: endDateValue };
     method.value = "GET";
 
     await fetchApi();

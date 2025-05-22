@@ -14,7 +14,6 @@
         <Dropdown 
           class="w-[15%] flex justify-between px-2 items-center" 
           v-model="dateStartLine.selected"
-          :key="dateStartLine.selected"  
           :options="dateStartLine.options" 
           optionLabel="label" 
         />
@@ -22,18 +21,17 @@
         <Dropdown 
           class="w-[15%] flex justify-between px-2 items-center" 
           v-model="dateEndLine.selected" 
-          :key="dateEndLine.selected" 
           :options="dateEndLine.options" 
           optionLabel="label" 
         />
       </div>
-      <LineChart :chartData="chartDataLine" :options1="dateStartLine" :options2="dateEndLine" class="w-[100%] min-w-[30rem]" />
+      <LineChart :chartData="chartDataLine" class="w-[100%] min-w-[30rem]" />
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, watch, nextTick } from "vue";
+import { ref, onMounted, watch } from "vue";
 import BarChart from "~/components/charts/BarChart.vue";
 import LineChart from "~/components/charts/LineChart.vue";
 import DoughnutChart from "~/components/charts/DoughnutChart.vue";
@@ -50,41 +48,17 @@ const dateEndLine = ref({ options: [], selected: null });
 const { getRevenueStream, getTopSpenders, getHighestSales, getExpenses } = AnalyticApi();
 const { getDropdownData } = DropdownApi();
 
-const updateEndDateOptions = (selectedValue) => {
-  if (!selectedValue || !dateStartLine.value.options.length) {
-    console.warn("updateEndDateOptions: Start date is not selected or options are empty.");
-    return;
-  }
+const fetchChartData = async () => {
+  const startDate = dateStartLine.value.selected?.value || null;
+  const endDate = dateEndLine.value.selected?.value || null;
 
-  const selectedRaw = selectedValue.value || selectedValue; // Ensure raw value is extracted
-  console.log("Updating end date options for start date:", selectedRaw);
-  console.log("Available Start Date Options:", dateStartLine.value.options.map(opt => opt.value));
+  console.log("startDate:", startDate); // Debugging to check values
+  console.log("endDate:", endDate);
 
-  // Find index of the selected start date
-  const startIndex = dateStartLine.value.options.findIndex(
-    (option) => option.value === selectedRaw
-  );
-
-  if (startIndex === -1) {
-    console.warn(`❌ Selected start date "${selectedRaw}" NOT found in options!`);
-    return;
-  }
-
-  console.log(`✅ Selected value "${selectedRaw}" is at index:`, startIndex);
-
-  // Update end date options
-  const updatedEndDateOptions = dateStartLine.value.options.slice(startIndex + 1);
-  dateEndLine.value.options = updatedEndDateOptions;
-  dateEndLine.value.selected = updatedEndDateOptions.length > 0 ? updatedEndDateOptions[0].value : null;
-
-  console.log("✅ Updated End Date Options:", updatedEndDateOptions.map(opt => opt.value));
-  console.log("✅ New Selected End Date:", dateEndLine.value.selected);
-  console.log("✅ New Selected Start Date:", dateStartLine.value.selected);
-};
-
-onMounted(async () => {
-  const revenueData = await getRevenueStream();
-  const expensesData = await getExpenses();
+  if (!startDate || !endDate) return;
+  
+  const revenueData = await getRevenueStream(startDate, endDate);
+  const expensesData = await getExpenses(startDate, endDate);
 
   if (revenueData && expensesData) {
     chartDataLine.value = {
@@ -95,19 +69,27 @@ onMounted(async () => {
       ],
     };
   }
+};
 
+const updateEndDateOptions = (newStartDate) => {
+  if (!newStartDate || !dateStartLine.value.options.length) return;
+  
+  const startIndex = dateStartLine.value.options.findIndex(opt => opt.value === newStartDate);
+  if (startIndex === -1) return;
+  
+  dateEndLine.value.options = dateStartLine.value.options.slice(startIndex + 1);
+  dateEndLine.value.selected = dateEndLine.value.options.length > 0 ? dateEndLine.value.options[0] : null;
+};
+
+onMounted(async () => {
   const monthsData = await getDropdownData();
-  console.log("Fetched Dropdown Data:", monthsData);
-
   if (monthsData.length) {
     dateStartLine.value.options = monthsData.map(item => ({ label: item.label, value: item.value }));
-    dateStartLine.value.selected = dateStartLine.value.options[0]?.value || null;
-
-    console.log("Initialized Start Date Options:", dateStartLine.value.selected);
-
-    // Ensure end date options are set correctly
-    updateEndDateOptions(dateStartLine.value.selected);
+    dateStartLine.value.selected = dateStartLine.value.options[0] || null;
+    updateEndDateOptions(dateStartLine.value.selected?.value);
   }
+
+  fetchChartData();
 
   const stockData = await getTopSpenders();
   if (stockData) {
@@ -128,23 +110,16 @@ onMounted(async () => {
 
 watch(
   () => dateStartLine.value.selected,
-  async (newStartDate) => {
-    if (!newStartDate) {
-      dateEndLine.value.selected = null;
-      return;
-    }
+  (newStartDate) => {
+    updateEndDateOptions(newStartDate?.value);
+    fetchChartData();
+  }
+);
 
-    console.log("New Start Date Selected:", newStartDate);
-
-    await nextTick();
-
-    if (!dateStartLine.value.options.length) {
-      console.warn("updateEndDateOptions: Options are still empty, skipping update.");
-      return;
-    }
-
-    updateEndDateOptions(newStartDate);
-  },
-  { immediate: true }
+watch(
+  () => dateEndLine.value.selected,
+  () => {
+    fetchChartData();
+  }
 );
 </script>

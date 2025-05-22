@@ -9,6 +9,7 @@ export const PurchaseApi = () => {
 
     body.value = {
       product_id: purchaseData.productId,
+      supplier_id: purchaseData.supplierId,
       count: +purchaseData.count,
       price: +purchaseData.price,
       is_paid: purchaseData.isPaid,

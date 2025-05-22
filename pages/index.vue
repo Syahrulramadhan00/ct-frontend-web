@@ -10,7 +10,7 @@
 
     <div class="flex gap-4 flex-wrap">
       <!-- TOKOPEDIA ORDER SECTION -->
-      <div class="flex gap-4 flex-wrap flex-1 mt-8">
+      <!-- <div class="flex gap-4 flex-wrap flex-1 mt-8">
         <div class="main-container grow h-80">
           <div class="flex items-center gap-1">
             <p class="font-semibold text-lg">Tokopedia</p>
@@ -26,7 +26,7 @@
             <DashboardMenuTokopedia />
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- TAGIHAN TABLE SECTION -->
       <div class="flex gap-4 flex-wrap flex-1 mt-8">
@@ -57,7 +57,7 @@
 
     <div class="flex gap-4 flex-wrap">
       <!-- TOKOPEDIA CONNECT SECTION -->
-      <div class="flex-1 main-container bg-green-400 max-w-80 h-80 mt-8">
+      <!-- <div class="flex-1 main-container bg-green-400 max-w-80 h-80 mt-8">
         <div class="flex flex-col items-center">
           <p class="font-semibold text-4xl text-gray-800">Tokopedia</p>
           <NuxtImg
@@ -70,7 +70,7 @@
             <p class="text-sm px-12 py-1 font-semibold">Hubungkan</p>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- NEED TO DELIVER SECTION -->
       <div class="flex gap-4 flex-wrap flex-1 mt-8">
@@ -78,7 +78,7 @@
           <p
             class="font-semibold text-lg overflow-hidden whitespace-nowrap mb-1"
           >
-            Tagihan belum dibayar
+            Tagihan Sudah Lunas
           </p>
           <DataTable
             :value="tagihan"
