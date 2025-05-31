@@ -1,6 +1,7 @@
+
 export const PurchaseApi = () => {
   const { fetchApi, res, url, pending, method, body } = FetchUtils();
-  const { formatDate } = Util();
+  const { formatDate, formatRupiah } = Util();
 
   async function addPurchase(purchaseData, fallback) {
     res.value = [];
@@ -33,9 +34,10 @@ export const PurchaseApi = () => {
           id: item.ID,
           no: index + 1,
           nama: item.Product.Name,
+          supplier: item.Supplier.Name,
           jumlah: item.Count,
-          harga: item.Price,
-          total: item.Price * item.Count,
+          harga: formatRupiah(item.Price),
+          total: formatRupiah(item.Price * item.Count),
           tanggal: formatDate(item.CreatedAt),
           lunas: item.IsPaid,
         };

@@ -34,7 +34,7 @@
           <p
             class="font-semibold text-lg overflow-hidden whitespace-nowrap mb-1"
           >
-            Tagihan belum dibayar
+            Tagihan Terakhir
           </p>
           <DataTable
             :value="tagihan"
@@ -43,13 +43,14 @@
             tableStyle="min-width: 50rem"
           >
             <Column
-              field="kode"
+              field="invoice_code"
               header="Tanda terima"
               style="width: 20%"
             ></Column>
-            <Column field="klien" header="Klien"></Column>
-            <Column field="jumlah" header="Jumlah"></Column>
-            <Column field="kontak" header="Kontak"></Column>
+            <Column field="client_name" header="Klien"></Column>
+            <Column field="total_amount" header="Jumlah"></Column>
+            <Column field="client_contact" header="Kontak"></Column>
+            <Column field="payment_status" header="Status"></Column>
           </DataTable>
         </div>
       </div>
@@ -73,7 +74,7 @@
       </div> -->
 
       <!-- NEED TO DELIVER SECTION -->
-      <div class="flex gap-4 flex-wrap flex-1 mt-8">
+      <!-- <div class="flex gap-4 flex-wrap flex-1 mt-8">
         <div class="main-container grow h-80 w-56">
           <p
             class="font-semibold text-lg overflow-hidden whitespace-nowrap mb-1"
@@ -92,24 +93,30 @@
             <Column field="kontak" header="Kontak"></Column>
           </DataTable>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { DummyService } from "@/service/DummyService";
-import FetchUtils from "~/composables/FetchUtils";
+// Remove DummyService as you'll be fetching real data
+// import { DummyService } from "@/service/DummyService"; 
+import { AnalyticApi } from "~/composables/AnalyticApi"; // Import AnalyticApi
 
-const { fetchApi, res, url } = FetchUtils();
+const { getLatestBill } = AnalyticApi(); // Destructure getLatestBill
 
-url.value = "token-validator";
+const tagihan = ref([]); // Initialize as an empty array
 
 onMounted(async () => {
-  tagihan.value = DummyService.getTagihanData();
-  await fetchApi();
+  // Fetch actual data using your composable
+  const data = await getLatestBill();
+  if (data) {
+    tagihan.value = data; // Assign fetched data to tagihan
+  } else {
+    // Handle error or no data case
+    console.error("Failed to fetch latest bills.");
+    tagihan.value = []; // Ensure tagihan is an empty array on error
+  }
 });
-
-const tagihan = ref();
 </script>

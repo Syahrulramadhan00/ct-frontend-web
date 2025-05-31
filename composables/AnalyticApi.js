@@ -78,5 +78,20 @@ export const AnalyticApi = () => {
     }
   }
 
-  return { res, pending, getRevenueStream, getStockMonitoring, getHighestSales, getExpenses, getTopSpenders };
+
+  async function getLatestBill() {
+    res.value = [];
+    url.value = "get-latest-bill";
+    method.value = "GET";
+
+    await fetchApi();
+    if (res.value.status === 200) {
+      const body = await res.value.json();
+      return body.data;
+    } else {
+      return null;
+    }
+  }
+  
+  return { res, pending, getRevenueStream, getStockMonitoring, getHighestSales, getExpenses, getTopSpenders,getLatestBill };
 };

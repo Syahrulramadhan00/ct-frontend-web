@@ -22,6 +22,7 @@
       />
       <Divider class="mb-8" />
       <AppMenuItem icon="pi-address-book" title="Klien" link="/client" />
+      <AppMenuItem icon="pi-warehouse" title="Supplier" link="/supplier" />
       <AppMenuItem icon="pi-chart-pie" title="Analitik" link="/analytic" />
     </div>
   </div>

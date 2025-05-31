@@ -40,6 +40,8 @@
             style="width: 5%"
         ></Column>
         <Column filterField="name" field="name" header="Name"></Column>
+        <Column filterField="address" field="address" header="Alamat"></Column>
+        <Column filterField="telephone" field="telephone" header="Telepon"></Column>
         <Column field="" header="Menu">
           <template #body="{data}">
             <div class="flex">

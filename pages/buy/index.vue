@@ -53,6 +53,7 @@
           header="Jumlah"
           style="width: 15%"
         ></Column>
+        <Column filterField="supplier" field="supplier" header="Supplier"></Column>
         <Column filterField="harga" field="harga" header="Harga"></Column>
         <Column filterField="total" field="total" header="Total"></Column>
         <Column filterField="tanggal" field="tanggal" header="Tanggal"></Column>
