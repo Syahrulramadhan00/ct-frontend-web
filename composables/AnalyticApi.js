@@ -2,6 +2,7 @@ import FetchUtils from "~/composables/FetchUtils";
 
 export const AnalyticApi = () => {
   const { fetchApi, res, url, queryParams, pending, method } = FetchUtils();
+  const {formatRupiah} = Util()
 
   async function getRevenueStream(startDateValue, endDateValue) {
     res.value = [];
@@ -87,9 +88,17 @@ export const AnalyticApi = () => {
     await fetchApi();
     if (res.value.status === 200) {
       const body = await res.value.json();
-      return body.data;
+      return body.data.map((bill, index) => {
+        return {
+          code: bill.invoice_code,
+          name: bill.client_name,
+          amount: formatRupiah(bill.total_amount),
+          contact: bill.client_contact,
+          status: bill.payment_status,
+        }
+      } )
     } else {
-      return null;
+      return [];
     }
   }
   

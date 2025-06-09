@@ -30,7 +30,7 @@
 
       <!-- TAGIHAN TABLE SECTION -->
       <div class="flex gap-4 flex-wrap flex-1 mt-8">
-        <div class="main-container grow h-80 w-56">
+        <div class="main-container grow h-140 w-56">
           <p
             class="font-semibold text-lg overflow-hidden whitespace-nowrap mb-1"
           >
@@ -39,18 +39,30 @@
           <DataTable
             :value="tagihan"
             scrollable
-            scrollHeight="256px"
+            scrollHeight="400px"
             tableStyle="min-width: 50rem"
           >
             <Column
-              field="invoice_code"
+              field="code"
               header="Tanda terima"
               style="width: 20%"
             ></Column>
-            <Column field="client_name" header="Klien"></Column>
-            <Column field="total_amount" header="Jumlah"></Column>
-            <Column field="client_contact" header="Kontak"></Column>
-            <Column field="payment_status" header="Status"></Column>
+            <Column field="name" header="Klien"></Column>
+            <Column field="amount" header="Jumlah"></Column>
+            <Column field="contact" header="Kontak"></Column>
+      <Column field="status" header="Status">
+        <template #body="slotProps">
+          <span
+            :class="{
+              'text-green-500': slotProps.data.status === 'Lunas',
+              'text-red-500': slotProps.data.status !== 'Lunas',
+            }"
+            class="font-bold"
+          >
+            {{ slotProps.data.status }}
+          </span>
+        </template>
+      </Column>
           </DataTable>
         </div>
       </div>
