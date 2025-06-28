@@ -16,7 +16,7 @@
         :globalFilterFields="['no', 'nama', 'harga', 'total', 'tanggal']"
       >
         <template #header>
-          <div class="flex justify-between">
+          <div class="flex justify-between gap-12 overflow-scroll">
             <div
             @click="buyModal = true"
               class="main-container bg-purple-400 p-0 flex items-center shadow-md hover:cursor-pointer"

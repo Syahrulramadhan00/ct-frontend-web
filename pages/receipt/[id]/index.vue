@@ -156,6 +156,7 @@ import { ref, onMounted } from "vue";
 import { FilterMatchMode } from "primevue/api";
 import "primeicons/primeicons.css";
 import {InvoiceApi} from "~/composables/invoices/InvoiceApi.js";
+const {formatRupiah} = Util()
 
 
 onMounted(async () => {
@@ -232,10 +233,11 @@ const confirmDelete = (id) => {
 };
 
 const confirmPaying = () => {
-  const totalAmount = invoice.value.reduce((acc, curr) => acc + curr.jumlah, 0);
   if (receipt?.value.Status === 2){
+    const totalAmount = invoice.value.reduce((acc, curr) => acc + curr.total, 0);
+    const formattedTotal = formatRupiah(totalAmount);
     confirm.require({
-      message: `Apakah ingin menyelesaikan tanda terima ini? (sebesar ${totalAmount})`,
+      message: `Apakah ingin menyelesaikan tanda terima ini? (sebesar ${formattedTotal})`,
       header: 'Bayar tanda terima',
       icon: 'pi pi-info-circle mr-2',
       rejectLabel: 'Cancel',
