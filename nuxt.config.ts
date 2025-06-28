@@ -7,6 +7,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       apiBaseUrl: process.env.API_BASE_URL,
+      forecastUrl: process.env.FORECAST_BASE_URL,
     },
   },
   modules: ["nuxt-primevue", "@nuxt/image", "@pinia/nuxt"],
