@@ -43,7 +43,7 @@ function getDate(date) {
 
 const totalAmount = computed(() => {
   return rawInvoices.value.reduce((sum, inv) => {
-    return sum + (inv?.jumlah || 0);
+    return sum + (inv?.rawJumlah || 0);
   }, 0);
 });
 

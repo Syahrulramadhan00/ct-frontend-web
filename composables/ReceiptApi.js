@@ -1,6 +1,6 @@
 export const ReceiptApi = () => {
     const {fetchApi, res, url, pending, method, body} = FetchUtils();
-    const {formatDate} = Util();
+    const {formatDate, formatRupiah} = Util();
 
     async function getReceipts() {
         res.value = [];
@@ -67,7 +67,9 @@ export const ReceiptApi = () => {
                     id: item.ID,
                     no: index + 1,
                     kode: item.Invoice.InvoiceCode,
-                    jumlah: item.Invoice.TotalPrice,
+                    total: item.Invoice.TotalPrice,
+                    jumlah: formatRupiah(item.Invoice.TotalPrice),
+                    rawJumlah: item.Invoice.TotalPrice,
                     tanggal : item.Invoice.Date
                 };
             });

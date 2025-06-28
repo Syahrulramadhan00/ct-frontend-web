@@ -1,5 +1,5 @@
 <template>
-  <nuxt-link :to="link" class="flex flex-row items-baseline mt-3">
+  <nuxt-link @click="$emit('selected')" :to="link" class="flex flex-row items-baseline mt-3">
     <i
       :class="[
         'pi',
@@ -22,7 +22,7 @@
 </template>
   
   <script>
-import { computed } from "vue";
+import { computed, defineEmits } from "vue";
 import { useRoute } from "vue-router";
 
 export default {
@@ -58,6 +58,9 @@ export default {
     };
   },
 };
+
+
+defineEmits(['selected']);
 </script>
   
   <style scoped>

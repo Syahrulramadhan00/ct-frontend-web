@@ -42,7 +42,7 @@
         :globalFilterFields="['no', 'barang', 'stok', 'status']"
       >
         <template #header>
-          <div class="flex justify-between">
+          <div class="flex justify-between gap-12 overflow-scroll">
             <div
               @click="visible = true"
               class="main-container bg-purple-400 p-0 flex items-center shadow-md hover:cursor-pointer"

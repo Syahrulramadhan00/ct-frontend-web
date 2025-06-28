@@ -111,7 +111,7 @@
       <div class="flex-1">
         <!-- FILE SECTION -->
         <div class="main-container">
-          <p class="mb-3 font-semibold text-lg">Dokumen surat PO</p>
+          <p class="mb-3 font-semibold text-lg">Dokumen Surat PO</p>
           <FileUpload
               name="demo[]"
               @uploader="uploadFile($event)"
@@ -139,7 +139,7 @@
         </div>
         <div class="main-container mt-5">
           <div class="flex items-baseline">
-          <p class="mb-3 font-semibold text-lg">Dokumen surat Faktur</p>
+          <p class="mb-3 font-semibold text-lg">Dokumen Surat Faktur</p>
             <p v-if="!isFakturInactive" class="text-gray-700 ml-2">(belum aktif)</p>
           </div>
           <FileUpload
@@ -203,7 +203,7 @@
                 class="w-96 md:w-80"
                 :disabled="!isInvoiceValid"
             />
-            <label for="discount">Presentasi diskon</label>
+            <label for="discount">Presentase Diskon</label>
           </FloatLabel>
           <p class="ml-4 text-2xl text-gray-500">%</p>
         </div>
@@ -217,7 +217,7 @@
                 class="w-96 md:w-80"
                 :disabled="!isInvoiceValid"
             />
-            <label for="jangkaPembayaran">Jangka pembayaran</label>
+            <label for="jangkaPembayaran">Jangka Pembayaran</label>
           </FloatLabel>
           <p class="ml-4 text-lg text-gray-500">hari</p>
         </div>
@@ -256,7 +256,7 @@
                 class="lg:w-96 md:w-64"
                 :disabled="!isInvoiceValid"
             />
-            <label for="project">nama proyek</label>
+            <label for="project">Nama Proyek</label>
           </FloatLabel>
           <FloatLabel class="mt-8">
             <InputText
@@ -265,7 +265,7 @@
                 class="lg:w-96 md:w-64"
                 :disabled="!isInvoiceValid"
             />
-            <label for="poCode">kode pre-order</label>
+            <label for="poCode">Kode Pre-Order</label>
           </FloatLabel>
           <FloatLabel class="mt-8">
             <InputText
@@ -313,7 +313,7 @@
                 class="md:w-64 lg:w-96"
                 :disabled="!isInvoiceValid"
             />
-            <label for="metodePembayaran">Metode pembayaran</label>
+            <label for="metodePembayaran">Metode Pembayaran</label>
           </FloatLabel>
           <FloatLabel class="mt-8">
             <InputText
@@ -323,7 +323,7 @@
                 class="md:w-64 lg:w-96"
                 :disabled="!isInvoiceValid"
             />
-            <label for="platformPembayran">Platform pembayaran</label>
+            <label for="platformPembayran">Platform Pembayaran</label>
           </FloatLabel>
           <FloatLabel class="mt-8">
             <InputText
@@ -332,7 +332,7 @@
                 class="md:w-64 lg:w-96"
                 :disabled="!isInvoiceValid"
             />
-            <label for="nomorRekening">Nomor rekening</label>
+            <label for="nomorRekening">Nomor Rekening</label>
           </FloatLabel>
           <FloatLabel class="mt-8">
             <InputText

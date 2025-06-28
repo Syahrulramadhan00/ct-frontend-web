@@ -23,13 +23,13 @@ export default {
   data() {
     return {
       steps: [
-        "buat PO",
+        "Buat PO",
         "Finalisasi",
-        "barang terkirim",
-        "buat faktur",
-        "masuk tt",
-        "pembayaran",
-        "selesai",
+        "Barang Terkirim",
+        "Buat Faktur",
+        "Tanda Terima",
+        "Pembayaran",
+        "Selesai",
       ],
     };
   },
